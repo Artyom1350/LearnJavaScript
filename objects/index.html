@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Привет Object</title>
+</head>
+<body>
+    <script>
+        //Задача 1
+        let user=new Object();
+        user.name="Jhon";
+        user.surname="Smith";
+        user.name="Pete";
+        delete user.name;
+
+        //Задача 2
+        let us=new Object();
+        function isEmpty(obj){
+            for(let key in obj){
+                return true;
+            }
+            return false;
+        }
+        //Задача 3
+        let salaries = {
+          John: 100,
+          Ann: 160,
+          Pete: 130
+        }
+
+        function summ(obj){
+            let sum=0;
+            for(let key in obj){
+                sum+=obj[key];
+            }
+            return sum;
+        }
+        sum=summ(salaries);
+        alert(sum);
+
+        //Задача 4
+
+        let menu = {
+          width: 200,
+          height: 300,
+          title: "My menu"
+        };
+
+        function multiplyNumeric(obj){
+            for(let key in obj){
+                if(typeof obj[key] == "number"){
+                    obj[key]*=2;
+                }
+            }
+        }
+
+        
+    </script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Циклы while и for</title>
+</head>
+<body>
+    <script>
+        //Задача 1
+        let i = 3;
+
+        while (i) {
+            console.log( i-- ); //на значении 0
+        }
+
+        //Задача 2
+        i = 0;
+        while (++i < 5) console.log( i ); //начнет с 0 (последнее условие проходит)
+
+        while (i++ < 5) console.log( i ); //начнет с 1 (последнее условие не пройдет)
+    
+        //Задача 3
+        for (let i = 0; i < 5; i++) console.log( i ); 
+        //разницы нет
+        for (let i = 0; i < 5; ++i) console.log( i );
+        
+        //Задача 4
+        console.log('Задача 4');
+        for(let i=2;i<=10;i++){
+            console.log(i);
+        }
+        //Задача 5
+        console.log('Задача 5');
+        let b=0;
+        while(b<3){
+            console.log(`number ${b}!`);
+            b++;
+        }
+        //Задача 6
+        let bool=true;
+        while(bool){
+            number=prompt('Введите число');
+            if(number==null){
+                break;
+            }
+            if(number>100){
+                break;
+            }else{
+                alert('Введите еще раз');
+            }
+        }
+        //Задача 7
+        console.log('Задача 7');
+        for(let i=2;i<10;i++){
+            let bool=true;
+            for(let j=2;j<i;j++){                
+                if(i%j==0){
+                    bool=false;
+                    break;
+                }
+            }
+            if(bool) console.log(i);
+        }
+
+        
+    </script>
+</body>
+</html>

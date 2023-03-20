@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Функции</title>
+</head>
+<body>
+    <script>
+        //Задача 1
+        function checkAge(age) {
+          if (age > 18) {
+            return true;
+          } else {
+            return confirm('Родители разрешили?');
+          }
+          //с else или без работать будет также из-за return
+        }
+        //Задача 2
+        //с помощью ?
+        function checkAge1(age) {
+            let res;
+            return res=age>18 ? true : confirm('А родители разрешили?');
+        }
+        //С помощью || 
+
+        function checkAge2(age) {
+            let res;
+            return age>18 || false || confirm('А родители разрешили?');
+        }
+
+        //Задача 3
+
+        function min(a,b){
+            return a<b ? a : b;
+        }
+        //Задача 4
+        function pow(a,b){
+            return a**b;
+        }
+    </script>
+</body>
+</html>

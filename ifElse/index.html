@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Условия</title>
+</head>
+<body>
+    <script>
+        // Задача 1
+        if ("0") {
+            alert( 'Привет' ); //строка выведется
+        }
+        
+        //Задача 2
+        if(prompt('Какой официальное название JavaScript','ECMASCript')=='ECMASCript'){
+            alert('Верно!');
+        }else alert('Не верно!');
+
+        //Задача 3
+        let answer=prompt('Введите число');
+        if(answer>0){
+            alert(1);
+        }else if(answer<-0){
+            alert(-1);
+        }else alert(0);
+
+        //Задача 4
+        let result;
+        if (a + b < 4) {
+            result = 'Мало';
+        } else {
+          result = 'Много';
+        }
+
+        result=(a+b<4) ? 'Мало' : 'Много';
+
+        //Задача 5
+        let message;
+
+        if (login == 'Сотрудник') {
+          message = 'Привет';
+        } else if (login == 'Директор') {
+          message = 'Здравствуйте';
+        } else if (login == '') {
+          message = 'Нет логина';
+        } else {
+          message = '';
+        }
+
+        message=(login=='Сотрудник') ? 'Привет' :
+        (login=='Директор') ? 'Здравствуйте':
+        (login=='') ? 'Нет логина':
+        '' ;
+    </script>
+</body>
+</html>
