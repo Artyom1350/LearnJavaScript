@@ -153,11 +153,39 @@
         //Задача 11
 
         function getAverageAge(users){
-            array.forEach(element => {
-                
+            summ=0;
+            users.forEach(item => {
+                summ+=+item.age
             });
+            return summ;
+        } //мое решение
+
+        function getAverageAge(users) {
+          return users.reduce((prev, user) => prev + user.age, 0) / users.length; //из документации, reduce складывает все значения в массиве
         }
 
+        vasya = { name: "Вася", age: 25 };
+        petya = { name: "Петя", age: 30 };
+        masha = { name: "Маша", age: 29};
+        arr = [ vasya, petya, masha ];
+        console.log(getAverageAge(arr));
+
+        //задача 12
+
+        function unique(arr){
+            for(let i=0;i<arr.length;i++){
+                for(let j=0;j<arr.length;j++){
+                    
+                }
+            }
+            return arr;
+        }
+
+        let strings = ["кришна", "кришна", "харе", "харе",
+          "харе", "харе", "кришна", "кришна", ":-O"
+        ];
+
+        console.log( unique(strings) );
 
     </script>
 </body>
