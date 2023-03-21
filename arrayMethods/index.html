@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Методы массивов</title>
+</head>
+<body>
+    <script>
+        //Задача 1
+        function camelize(str){
+            let mas=str.split('');
+            for(let i=0;i<mas.length;i++){
+                if(mas[i]=='-'){
+                    mas[i+1]=mas[i+1].toUpperCase();
+                    mas[i]='';
+                }
+            }
+            str='';
+            for(let i=0;i<mas.length;i++){
+                if(mas[i]!='') str+=mas[i];
+            }
+            return str;
+        }
+        //Задача 2
+        function filterRange(arr, a, b){
+            let mas=arr.slice(0,arr.length);
+
+            for(let i=0;i<mas.length;i++){
+                if(!(mas[i]>=a && mas[i]<=b)){
+                    alert(mas.splice(i,1));
+                    i--;
+                }
+            }
+            return mas;
+        }
+        //Задача 3
+        function filterRangeInPlace(arr, a, b){
+            let mas=arr.slice(0,arr.length);
+
+            for(let i=0;i<mas.length;i++){
+                if(!(mas[i]>a || mas[i]<b)){
+                    alert(mas.splice(i,1));
+                    i--;
+                }
+            }
+            return mas;
+        }
+
+        //Задача 4
+        //первый метод
+        function sortArray(arr){
+            for(let j=1;j<arr.length;j++){
+                for(let i=1;i<arr.length;i++){
+                    if(arr[i-1]<arr[i]){
+                        let temp=arr[i];
+                        arr[i]=arr[i-1];
+                        arr[i-1]=temp;
+                    }
+                }
+            }
+            return arr;
+        }
+        //второй метод
+        function sortArray1(arr){
+            arr.sort((a,b)=>b-a);
+            return arr;
+        }
+        //Задача 5
+        function copySorted(arr){
+            let mas=arr.slice();
+            return mas.sort();
+        }
+        //Задача 6
+        function Calculator(){
+            this.funct=[{name:"+",func:(a,b)=>a+b},{name:"-",func:(a,b)=>a-b}];
+            this.calculate=function(str){
+                mas=str.split(' ');
+                let operand=this.funct.find(item=>item.name == mas[1]);
+                return operand.func(+mas[0],+mas[2]);
+            },
+            addMethod=function(name,func){
+                return this.funct.push({name: name, func: func});
+            }
+        }
+        //Задача 7
+        
+        let users=[
+            { name: "Вася", age: 25 },
+            { name: "Петя", age: 30 },
+            { name: "Маша", age: 28 }
+        ];
+
+        function transformObjects(obj){ //как бы я сделал
+            let mas=[];
+            obj.forEach(item => {
+                mas.push(item.name);
+            });
+            return mas;
+        }
+
+        console.log(names=users.map(item=>item.name)); //в одну строку
+
+        //Задача 8
+
+        let vasya = { name: "Вася", surname: "Пупкин", id: 1 };
+        let petya = { name: "Петя", surname: "Иванов", id: 2 };
+        let masha = { name: "Маша", surname: "Петрова", id: 3 };
+
+        users = [ vasya, petya, masha ];
+        arr1= users.map(({name,surname,id})=>({fullname:name+" "+surname,id:id})) //как я сделал
+        arr2=users.map(user=>({fullname:`${user.name} ${user.surname}`, id: `${user.id}`}))
+        console.log(arr1);
+        console.log(arr2);
+
+        //Задача 9
+
+        vasya = { name: "Вася", age: 25 };
+        petya = { name: "Петя", age: 30 };
+        masha = { name: "Маша", age: 28 };
+
+        let arr = [ vasya, petya, masha ];
+
+        console.log('z9');
+        function sortByAge(arr){
+            return console.log(arr.sort((a,b)=>a.age - b.age));
+        }
+        sortByAge(arr);
+
+        //Задача 10
+
+        arr = [1, 2, 3];
+
+        function shuffle(arr){
+            let randNum=Math.floor(Math.random()*arr.length);
+            console.log(randNum);
+            for(let i=0;i<randNum;i++){
+                for(let i=1;i<arr.length;i++){
+                let temp=arr[i-1]
+                arr[i-1]=arr[i];
+                arr[i]=temp;
+            }
+            }
+            return console.log(arr);
+        }
+        shuffle(arr); //мой вариант решения
+
+        function shuffle1(arr){
+            return console.log(arr.sort(() => Math.random() - 0.5));
+        }
+
+        //Задача 11
+
+        function getAverageAge(users){
+            array.forEach(element => {
+                
+            });
+        }
+
+
+    </script>
+</body>
+</html>

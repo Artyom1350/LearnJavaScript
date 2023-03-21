@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Массивы</title>
+</head>
+<body>
+    <script>
+        //задача 1
+        let fruits = ["Яблоки", "Груша", "Апельсин"];
+        // добавляем новое значение в "копию"
+        let shoppingCart = fruits;
+        shoppingCart.push("Банан");
+        // что в fruits?
+        alert( fruits.length ); //выведет длину (4)
+
+        //задача 2
+
+        let styles=['Джаз','Блюз'];
+        styles.push('Рок-н-ролл');
+        styles[Math.floor(styles.length/2)]='Классика';
+        //alert(styles.shift());
+        styles.unshift('Реп','Регги');
+        console.log(styles);
+
+        //Задача 3
+        let arr = ["a", "b"];
+
+        arr.push(function() {
+          alert( this );
+        });
+
+        //arr[2](); // ? выведет весь массив (и текст функции тоже)
+        //Задача 4
+        function sumInput(){
+            let bool=true;
+            let array=[];
+            while(bool){
+                let num=parseFloat(prompt('Введите число'));
+                if(!isNaN(num)) array.push(num);
+                if(isNaN(num)){
+                    bool=false;
+                    let sum=0;
+                    for(let i=0;i<array.length;i++){
+                        sum+=array[i];
+                    }
+                    return alert(sum), console.log(array);
+                }
+            }
+        }
+        //sumInput();
+        
+        //Задача 5
+        function getMaxSubSum(array){
+            let max=0;
+            for(let i=0;i<array.length;i++){
+                let summ=0;
+                for(let j=0;j<=i;j++){
+                    let summ1=0;
+                    for(let k=j;k<=i;k++){
+                        summ1+=array[k];
+                    }
+                    if(summ<summ1) summ=summ1;
+                }
+                if(summ>max) max=summ;
+            }
+            return max;
+        }
+        console.log(getMaxSubSum([-1, 2, 3, -9])); /*== 5*/
+        console.log(getMaxSubSum([2, -1, 2, 3, -9]));/* == 6*/
+        console.log(getMaxSubSum([-1, 2, 3, -9, 11]));/* == 11*/
+        console.log(getMaxSubSum([-2, -1, 1, 2]));/* == 3*/
+        console.log(getMaxSubSum([100, -9, 2, -3, 5]));/* == 100*/
+        console.log(getMaxSubSum([1, 2, 3]));/* == 6 (берём все)*/
+    </script>
+</body>
+</html>

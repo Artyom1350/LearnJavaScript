@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Числа</title>
+</head>
+<body>
+    <script>
+        //Задача 1
+        //let a=parseFloat(prompt('Введите первое число:'));
+        //let b=parseFloat(prompt('Введите второе число:'));
+        //alert(a+b);
+//
+        ////Задача 2
+        //alert( 1.35.toFixed(1) ); // 1.4
+        //alert( 6.35.toFixed(1) ); // 6.3
+        //alert( Math.ceil(6.35*10)/10 ); //6.4
+
+        //Задача 3
+
+        function readNumber(){
+
+            !isNaN(parseFloat(prompt('Введите число: '))) ? alert('Вы ввели число'): readNumber() ;
+        }
+        readNumber();
+
+        //Задача 4
+
+        //let i = 0;
+        //while (i != 10) {
+        //  i += 0.2;     //цикл не закончится, потому что i никогда не будет равен 10
+        //}  
+        
+        //Задача 5
+        function random(a,b){
+            let res=a+(Math.random()*b);
+            res=+res.toFixed(2);
+            if(res>=b){
+                return random(a,b);
+            }else{
+                return res;
+            }
+        }
+        // Задача 6
+
+        function randomInteger(a,b){
+            return +Math.floor(a+Math.random()*(b-a));
+        }
+
+    </script>
+</body>
+</html>

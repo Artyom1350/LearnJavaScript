@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Конструктор New</title>
+</head>
+<body>
+    <script>
+        //Задача 1
+
+        let mas=[1,2];
+        
+        function A() { return mas }
+        function B() { return mas }
+        let a = new A();
+        let b = new B();
+        alert( a == b ); //Если возвращать не экземпляр функции, а объект или массив, то будут равны
+        
+        //Задача 2
+
+        let calculator=new function(){
+            return obj={
+                read(){
+                    this.a=prompt('Введите первое число'); this.b=prompt('Введите второе число');
+                    return this;
+                },
+                sum(){
+                    return alert("Sum: "+ +this.b + +this.a), this;
+                },
+                mul(){
+                    return alert("Mul "+ this.a*this.b), this;
+                }
+            }
+        }
+        //calculator.read().sum().mul();
+
+        //Задача 3
+
+        function Accumulator(a){
+            return obj={
+                val:a,
+                read(){
+                    return this.val+=+prompt("Введите число"), this;
+                },
+                value(){
+                    return alert(this.val), this;
+                }
+            }
+        }
+        let accum=new Accumulator(1);
+        accum.read().read().value();
+    </script>
+</body>
+</html>

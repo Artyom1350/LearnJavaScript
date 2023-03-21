@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Строки</title>
+</head>
+<body>
+    <script>
+        //Задача 1
+        function ucFirst(stroke){
+            return stroke=stroke[0].toUpperCase()+stroke.slice(1);
+        }
+        //Задача 2
+        function checkSpam(str){
+            str=str.toLowerCase();
+            return str.includes('xxx') || str.includes('viagra') ? true : false;
+        }
+        //Задача 3
+        function truncate(str,max){
+            if(str.length <= max) return str;
+            else return str.slice(0,max-1)+"…";
+        }
+        //Задача 4
+        function extractCurrencyValue(str){
+            return +str.slice(1);
+        }
+    </script>
+</body>
+</html>

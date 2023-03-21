@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Методы объектов и this</title>
+</head>
+<body>
+    <script>
+        //Задача 1
+        function makeUser() {
+          return {
+            name: "John",
+            ref: this
+          };
+        }
+        let user = makeUser();
+        //alert( user.ref.name ); //Выведет Error, т.к. не увидет свойство 
+
+        //Задача 2
+        let calculator={
+            read(array){
+                this.array=array;
+            },
+            sum(){
+                let answer=0;
+                for(let i=0;i<this.array.length;i++){
+                    answer+=this.array[i];
+                }
+                return answer;
+            },
+            mul(){
+                let answer=1;
+                for(let i=0;i<this.array.length;i++){
+                    answer*=this.array[i];
+                }
+                return answer;
+            }
+        }    
+        calculator.read([2,3,4]);
+        //alert(calculator.sum());
+        //alert(calculator.mul());   
+        
+        //Задача 3
+
+        let ladder={
+            step:0,
+            up(){
+                this.step++;
+                return this;
+            },
+            down() {
+              this.step--;
+              return this
+            },
+            showStep: function() {
+              alert( this.step );
+              return this;
+            }
+        }
+
+        ladder.up().up().down().showStep().down().showStep(); //чтобы вызывать свойство объекта, нужен объект, поэтому нужно прописывать return this;
+        
+    </script>
+</body>
+</html>
