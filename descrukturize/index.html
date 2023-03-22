@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Деструктуризация</title>
+</head>
+<body>
+    <script>
+        //Задача 1
+        let user = { name: "John", years: 30 };
+
+        let {admin:isAdmin=false, name,years:age }=user;
+
+       // alert( name ); // John
+       // alert( age ); // 30
+       // alert( isAdmin ); // false
+
+        //Задача 2
+
+        function topSalaries(obj){
+            return Object.entries(obj).sort((a,b)=>(b[1]-a[1]))[0][0];
+        }
+
+        let salaries = {
+          "John": 100,
+          "Pete": 300,
+          "Mary": 250
+        };
+
+        console.log(topSalaries(salaries));
+    </script>
+</body>
+</html>

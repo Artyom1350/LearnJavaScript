@@ -157,6 +157,7 @@
             users.forEach(item => {
                 summ+=+item.age
             });
+            summ=summ/users.length;
             return summ;
         } //мое решение
 
@@ -174,8 +175,9 @@
 
         function unique(arr){
             for(let i=0;i<arr.length;i++){
-                for(let j=0;j<arr.length;j++){
-                    
+                if(arr.includes(arr[i],i+1)){
+                    arr.splice(i,1);
+                    i--;
                 }
             }
             return arr;
@@ -186,6 +188,25 @@
         ];
 
         console.log( unique(strings) );
+
+        //Задача 13
+
+        let users1 = [
+          {id: 'john', name: "John Smith", age: 20},
+          {id: 'ann', name: "Ann Smith", age: 24},
+          {id: 'pete', name: "Pete Peterson", age: 31},
+        ];
+
+        function groupById(arr){            
+            return arr.reduce((obj,val)=>{
+                obj[val.id]=val;
+                return obj;
+            },{});
+
+        }
+        console.log(groupById(users1));
+
+        //arr2=users.map(user=>({fullname:`${user.name} ${user.surname}`, id: `${user.id}`}))
 
     </script>
 </body>

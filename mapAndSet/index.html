@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map и Set</title>
+</head>
+<body>
+    <script>
+
+        //Задача 1
+
+        function unique(arr) { //мое решение
+            let set = new Set();
+            for(let i=0;i<arr.length;i++){
+                let bool=true;
+                for(let value of set){
+                    if(value==arr[i]) bool=false;
+                }
+                if(bool){
+                    set.add(arr[i]);
+                }
+            }
+            return set;
+        }
+
+        function unique1(arr) { //ответ, потому что set хранит в себе только уникальные значения
+          return Array.from(new Set(arr));
+        }
+
+        let values = ["Hare", "Krishna", "Hare", "Krishna",
+          "Krishna", "Krishna", "Hare", "Hare", ":-O"
+        ];
+        alert( unique1(values) );
+        console.log( unique(values) );
+
+        // Задача 2
+
+        let arr = ["nap", "teachers", "cheaters", "PAN", "ear", "era", "hectares"];
+
+        function aclean(arr){            
+            let map=new Map();
+            for(let i=0;i<arr.length;i++){
+                map.set(arr[i].toLowerCase().split('').sort().join(''),arr[i]);
+            }
+            return Array.from(map.values());
+
+        }
+        
+        console.log( aclean(arr) );
+
+        //Задача 3
+
+        let map = new Map();
+
+        map.set("name", "John");
+
+        let keys = Array.from(map.keys());
+
+        // Error: keys.push is not a function
+        // Ошибка: keys.push -- это не функция
+        keys.push("more");
+        console.log(keys);
+    </script>
+</body>
+</html>

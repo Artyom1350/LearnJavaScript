@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Замыкание</title>
+</head>
+<body>
+    <script>
+        //Задача 1
+
+        function makeCounter() {
+          let count = 0;
+
+          return function() {
+            return count++;
+          };
+        }
+
+        let counter = makeCounter();
+        let counter2 = makeCounter();
+
+       // alert( counter() ); // 0
+       // alert( counter() ); // 1
+//
+       // alert( counter2() ); // 0
+       // alert( counter2() ); // 1
+
+        //Задача 2
+
+        function Counter() {
+          let count = 0;
+
+          this.up = function() {
+            return ++count;
+          };
+          this.down = function() {
+            return --count;
+          };
+        }
+
+        let counter1 = new Counter();
+
+       // alert( counter1.up() ); // 1
+       // alert( counter1.up() ); // 2
+       // alert( counter1.down() ); // 3
+
+        //Задача 3
+
+        let phrase = "Hello";
+
+        if (true) {
+          let user = "John";
+        
+          function sayHi() {
+            alert(`${phrase}, ${user}`);
+          }
+        }
+
+        sayHi(); //hello, john
+
+        //Задача 4
+
+        function sum(a){
+            return function(b){
+                return a+b;
+            }
+        }
+        console.log(sum(1)(2))
+
+        //Задача 5
+
+        let arr = [1, 2, 3, 4, 5, 6, 7];
+
+        function inBetween(a,b,item){
+            return a<=item && item<=b ? true : false;
+        }
+        
+        
+        console.log( arr.filter(inBetween(3, 6)) ); // 3,4,5,6
+
+        console.log( arr.filter(inArray([1, 2, 10])) ); // 1,2
+    </script>
+</body>
+</html>

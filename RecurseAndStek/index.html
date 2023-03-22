@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Рекурсия и стек</title>
+</head>
+<body>
+    <script>
+        //Задача 1
+        //первый вариант решения
+        function sumTo(n){
+            let sum=0;
+            for(let i=0;i<=n;i++){
+                sum+=i;
+            }
+            return sum;
+        }
+        console.log(sumTo(100));
+
+        //Второй вариант решения
+        function sumTo2(n){
+            return n==1 ? n : n+sumTo(n-1);
+        }
+        console.log(sumTo2(100));
+
+        //Третий вариант решения
+
+        function sumTo3(n){
+            return n==1 ? n : ((1+n)/2)*n;
+        }
+        console.log(sumTo3(100));
+
+        //Задача 2
+        function factorial(n){
+            return n==1 ? 1 : n*factorial(n-1);
+        }
+        console.log(factorial(5));
+
+        //Задача 3
+
+        function fib(n){
+            sum=1;
+            first=1;
+            second=1;
+            for(let i=1;i<=n;i++){
+                sum=first+second;
+                first=second
+                second=i+1;
+            }
+            
+            return sum;
+        }   
+        console.log(fib(7));
+
+        //Задача 4
+        console.log('zadacha4')
+        let list = {
+          value: 1,
+          next: {
+            value: 2,
+            next: {
+              value: 3,
+              next: {
+                value: 4,
+                next: null
+              }
+            }
+          }
+        };
+
+        function printList(list){
+            let tmp=list;
+            while(tmp){
+                console.log(list.value);
+                tmp=list.next;
+            }
+        }
+        printList(list);
+
+        function printList1(list) {
+
+            alert(list.value); // выводим текущий элемент
+
+            if (list.next) {
+              printList1(list.next); // делаем то же самое для остальной части списка
+            }
+
+        }
+//        printList1(list);
+
+    </script>
+</body>
+</html>
