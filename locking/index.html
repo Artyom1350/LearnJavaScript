@@ -73,14 +73,47 @@
 
         let arr = [1, 2, 3, 4, 5, 6, 7];
 
-        function inBetween(a,b,item){
-            return a<=item && item<=b ? true : false;
+        function inBetween(a,b){
+            return function(x){
+                return x<=b && a<=x;
+            }
+        }
+        function inArray(arr){
+            return function(x){
+                bool=false;
+                for(let i=0;i<arr.length;i++){
+                    if(x==arr[i]){
+                        bool= true;
+                        
+                    }
+                }
+                return bool;
+
+            }
         }
         
         
         console.log( arr.filter(inBetween(3, 6)) ); // 3,4,5,6
 
         console.log( arr.filter(inArray([1, 2, 10])) ); // 1,2
+
+        //Задача 6
+
+        let users = [
+          { name: "John", age: 20, surname: "Johnson" },
+          { name: "Pete", age: 18, surname: "Peterson" },
+          { name: "Ann", age: 19, surname: "Hathaway" }
+        ];
+
+        function byField(str){
+            return function(a,b){
+                return a+"."+str>b+"."+str ? 1 : -1;
+            }
+        }
+        
+        
+        console.log(users.sort(byField('name')));
+        console.log(users.sort(byField('age')));
     </script>
 </body>
 </html>
