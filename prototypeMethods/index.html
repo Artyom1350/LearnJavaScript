@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Методы прототипов, объекты без свойства __proto__</title>
+</head>
+<body>
+    <script>
+        //Задача 1
+
+        let dictionary = Object.create(null,{
+            toString:{
+                value(){
+                    return Object.keys(this).join();
+                }
+            }
+        });
+
+
+
+
+        // добавляем немного данных
+        dictionary.apple = "Apple";
+        dictionary.__proto__ = "test"; // здесь __proto__ -- это обычный ключ
+
+        // только apple и __proto__ выведены в цикле
+        for(let key in dictionary) {
+          alert(key); // "apple", затем "__proto__"
+        }
+
+        // ваш метод toString в действии
+        alert(dictionary); // "apple,__proto__"
+
+        //Задача 2
+
+        function Rabbit(name) {
+          this.name = name;
+        }
+        Rabbit.prototype.sayHi = function() {
+          alert(this.name);
+        };
+
+        let rabbit = new Rabbit("Rabbit");
+
+        rabbit.sayHi();
+        Rabbit.prototype.sayHi();
+        Object.getPrototypeOf(rabbit).sayHi();
+        rabbit.__proto__.sayHi();
+    </script>
+</body>
+</html>

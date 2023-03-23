@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Встроенные прототипы</title>
+</head>
+<body>
+    <script>
+        //Задача 1
+        //function f() {
+        //  alert("Hello!");
+        //}
+        //Function.prototype.defer=function(x){
+        //    return setTimeout(this,x);
+        //}
+        //f.defer=Function.prototype.defer;
+        //f.defer(1000);
+
+        ////Задача 2
+
+        function f(a, b) {
+          alert( a + b );
+        }
+        
+        Function.prototype.defer=function(x){
+            func=this;
+
+            return function(...args){
+                return setTimeout(()=>func.apply(this,args),x);
+            }
+        }
+
+        f.defer(1000)(1, 2); // выведет 3 через 1 секунду.
+    </script>
+</body>
+</html>

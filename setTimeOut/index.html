@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SetTimeOut и setInterval</title>
+</head>
+<body>
+    <script>
+        //Задача 1
+        function printNumbers(a,b){
+            let timerId=setInterval(()=>a<=b ? console.log(a++) : clearInterval(timerId),1500);
+        }
+
+        function printNumbers1(a,b){
+            let timerId=setTimeout(function tick(){
+                console.log(a);
+                if(a<b){
+                    a++
+                    setTimeout(tick,1500);
+                }
+
+            },1500)
+        }
+        printNumbers1(1,5);
+
+        //Задача 2
+
+        let i = 0;
+
+        setTimeout(() => alert(i), 100); // 10000000
+
+        // предположим, что время выполнения этой функции >100 мс
+        for(let j = 0; j < 100000000; j++) {
+          i++;
+        }
+    </script>
+</body>
+</html>

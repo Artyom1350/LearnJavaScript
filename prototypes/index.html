@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Прототипное наследование</title>
+</head>
+<body>
+    <script>
+        //Задача 1
+        let animal = {
+          jumps: null
+        };
+
+        let rabbit = {
+          __proto__: animal,
+          jumps: true
+        };
+
+        alert( rabbit.jumps ); //true
+
+        delete rabbit.jumps;
+
+        alert( rabbit.jumps ); //null
+
+        delete animal.jumps;
+
+        alert( rabbit.jumps ); //undefined
+
+        //Задача 2
+
+        let head = {
+            glasses: 1
+        };
+
+        let table = {
+            __proto__:head,
+            pen: 3
+        };
+
+        let bed = {
+            __proto__:table,
+            sheet: 1,
+            pillow: 2
+        };
+
+        let pockets = {
+            __proto__:bed,
+            money: 2000
+        };
+        
+        //Задача 3
+
+        animal = {
+          eat() {
+            this.full = true;
+          }
+        };
+
+        rabbit = {
+          __proto__: animal
+        };
+
+        rabbit.eat(); //получит rabbit
+
+        //Задача 3
+
+        let hamster = {
+          stomach: [],
+                
+          eat(food) {
+            this.stomach.push(food);
+          }
+        };
+        
+        let speedy = {
+            stomach:[],
+          __proto__: hamster
+        };
+        
+        let lazy = {
+            stomach:[],
+          __proto__: hamster
+        };
+        
+        // Этот хомяк нашёл еду
+        speedy.eat("apple");
+        alert( speedy.stomach ); // apple
+        
+        // У этого хомяка тоже есть еда. Почему? Исправьте
+        //яблоко было у двоих, потому что они брали ссылку на один массив
+        alert( lazy.stomach ); // apple
+
+        
+    </script>
+</body>
+</html>

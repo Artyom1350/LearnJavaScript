@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Привязка контекста к функции</title>
+</head>
+<body>
+    <script>
+        //Задача 1
+        function f() {
+         // alert( this ); //null
+        }
+
+        let user = {
+          g: f.bind(null)
+        };
+
+        user.g();
+
+        //Задача 2
+
+        function f() {
+         // alert(this.name);
+        }
+        
+        f = f.bind( {name: "Вася"} ).bind( {name: "Петя" } );
+        
+        f(); //Вася
+        
+        //Задача 3
+
+        function sayHi() {
+          //alert( this.name );
+        }
+        sayHi.test = 5;
+
+        let bound = sayHi.bind({
+          name: "Вася"
+        });
+
+        //alert( bound.test ); //underfined, т.к. создается новый экземпляр
+
+        //Задача 4
+
+        function askPassword(ok, fail) {
+          let password = prompt("Password?", '');
+          if (password == "rockstar") ok();
+          else fail();
+        }
+
+        user = {
+          name: 'Вася',
+        
+          loginOk() {
+            alert(`${this.name} logged in`);
+          },
+      
+          loginFail() {
+            alert(`${this.name} failed to log in`);
+          },
+      
+        };
+
+        askPassword(user.loginOk.bind(user), user.loginFail.bind(user));
+
+        //Задача 5
+        function askPassword(ok, fail) {
+          let password = prompt("Password?", '');
+          if (password == "rockstar") ok();
+          else fail();
+        }
+
+        user = {
+          name: 'John',
+        
+          login(result) {
+            alert( this.name + (result ? ' logged in' : ' failed to log in') );
+          }
+        };
+
+        askPassword(user.login.bind(user,true),user.login.bind(user,false)); // ?
+    </script>
+</body>
+</html>

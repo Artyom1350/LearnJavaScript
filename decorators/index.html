@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Декораторы и переадресация вызова, call/apply</title>
+</head>
+<body>
+    <script>
+        //Задача 1
+        function work(a, b) {
+          console.log( a + b ); // произвольная функция или метод
+        }
+
+        function spy(func){
+          function wrapper(...args){
+            wrapper.calls.push(args);
+            return func.apply(this,args);
+          }            
+          wrapper.calls=[];
+          return wrapper;
+        }
+
+        work = spy(work);
+
+        work(1, 2); // 3
+        work(4, 5); // 9
+        console.log(work.calls);
+        for (let args of work.calls) {
+          console.log( 'call:' + args.join() ); // "call:1,2", "call:4,5"
+        }
+
+        //Задача 2
+
+        function f(x) {
+          alert(x);
+        }
+
+        function delay(f,ms){
+
+          function wrapper(str){
+            return setTimeout(wrapper.f,wrapper.ms,str);
+          }
+          wrapper.f=f;
+          wrapper.ms=ms;
+          return wrapper;
+        }
+
+        // создаём обёртки
+        let f1000 = delay(f, 1000);
+        let f1500 = delay(f, 1500);
+
+        //f1000("test"); // показывает "test" после 1000 мс
+        //f1500("test1"); // показывает "test" после 1500 мс
+
+        //Задача 3
+
+        function debounce(f,ms){
+          let isCooldown=false;
+
+          return function(){
+            if(isCooldown) return;
+
+            f.apply(this,arguments);
+
+            isCooldown=true;
+
+            setTimeout(()=>isCooldown=false,ms);
+          }
+        }
+        
+        
+        
+        
+        
+        let b = debounce(alert, 1000);
+
+        b(1); // выполняется немедленно
+        b(2); // проигнорирован
+
+        setTimeout( () => b(3), 100); // проигнорирован (прошло только 100 мс)
+        setTimeout( () => b(4), 1100); // выполняется
+        setTimeout( () => b(5), 1500); // проигнорирован (прошло только 400 мс от последнего вызова)
+
+        //Задача 4
+
+        function f(a) {
+          console.log(a)
+        }
+
+        function throttle(func,ms){
+          let isThrottled = false,
+          savedArgs,
+          savedThis;
+              
+          function wrapper() {
+          
+            if (isThrottled) { // (2)
+              savedArgs = arguments;
+              savedThis = this;
+              return;
+            }
+          
+            func.apply(this, arguments); // (1)
+          
+            isThrottled = true;
+          
+            setTimeout(function() {
+              isThrottled = false; // (3)
+              if (savedArgs) {
+                wrapper.apply(savedThis, savedArgs);
+                savedArgs = savedThis = null;
+              }
+            }, ms);
+          }
+      
+        return wrapper;
+        }
+
+        // f1000 передаёт вызовы f максимум раз в 1000 мс
+        f1000 = throttle(f, 1000);
+
+        f1000(1); // показывает 1
+        f1000(2); // (ограничение, 1000 мс ещё нет)
+        f1000(3); // (ограничение, 1000 мс ещё нет)
+
+        // когда 1000 мс истекли ...
+        // ...выводим 3, промежуточное значение 2 было проигнорировано
+    </script>
+</body>
+</html>
