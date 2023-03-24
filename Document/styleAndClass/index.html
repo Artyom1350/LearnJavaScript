@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Стили и классы</title>
+</head>
+<body>
+
+
+    <script>
+        function showNotification(options){
+            div=document.createElement('div');
+            div.style.position="absolute";
+            div.style.top=options.top+"px";
+            div.style.right=options.right+"px";
+            div.textContent=options.html;
+            div.className=options.className;
+            document.body.append(div);
+            setTimeout(()=>div.remove(),1500);
+        }   
+        showNotification({
+          top: 10, // 10px от верхней границы окна (по умолчанию 0px)
+          right: 10, // 10px от правого края окна (по умолчанию 0px)
+          html: "Hello!", // HTML-уведомление
+          className: "welcome" // дополнительный класс для div (необязательно)
+        }); 
+    </script>
+</body>
+</html>

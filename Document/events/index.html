@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>События</title>
+    <style>
+    #field {
+      width: 200px;
+      height: 150px;
+      border: 10px solid black;
+      background-color: #00FF00;
+      overflow: hidden;
+    }
+    #ball{
+        position: absolute;
+        width: 40px;
+        height: 40px;
+    }
+
+    h3 {
+      margin: 0;
+      padding-bottom: .3em;
+      font-size: 1.1em;
+    }
+    
+    p {
+      margin: 0;
+      padding: 0 0 .5em;
+    }
+    
+    .pane {
+      background: #edf5e1;
+      padding: 10px 20px 10px;
+      border-top: solid 2px #c4df9b;
+      width: 70rem;
+      margin: 10px 0 10px 0;
+    }
+    .flex{
+      display: flex;
+      justify-content: space-between;
+    }
+    
+    .remove-button {
+      font-size: 110%;
+      color: darkred;
+      right: 10px;
+      width: 24px;
+      height: 24px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .arrow {
+      padding: 0;
+      background: #ddd;
+      border-radius: 15px;
+      border: 1px solid gray;
+      font-size: 24px;
+      line-height: 24px;
+      color: #444;
+      display: block;
+    }
+
+    .arrow:focus {
+      outline: none;
+    }
+
+    .arrow:hover {
+      background: #ccc;
+      cursor: pointer;
+    }
+
+    ul {
+      height: 130px;
+      width: 9999px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      font-size: 0;
+    }
+
+    ul img {
+      width: 130px;
+      height: 130px;
+      display: block; /* убираем пустое место вокруг картинок */
+    }
+
+    ul li {
+      display: inline-block; /* убираем пустое место между элементами списка */
+    }
+    .slider{
+      display: flex;
+      align-items: center;
+    }
+    ul{
+      margin-left:0;
+      
+    }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>Задача 1</h1>
+        <p id="text">Некий текст</p>
+        <button onclick="hideText()">Спрятать текст</button>    
+    </div>
+    <div>
+        <h1>Задача 2</h1>
+        <button onclick="this.style.visibility='hidden'">Спрятать себя</button>
+    </div>
+    <div>
+        <h1>Задача 3</h1>
+        <div id="field" onclick="">
+            <img src="https://ru.js.cx/clipart/ball.svg" id="ball"> . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+            . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+        </div>
+    </div>
+    <div>
+        <h1>Задача 4</h1>
+        <p onclick="openMenu()">Меню(click)</p>
+        <ul id="menu">
+            <li>Item1</li>
+            <li>Item2</li>
+            <li>Item3</li>
+            <li>Item4</li>
+        </ul>
+    </div>
+    <div>
+        <h1>Задача 5</h1>
+        <div>
+            <div class="pane">
+              <div class="flex">
+                <h3>Лошадь</h3>
+                <button class="remove-button" onclick="this.parentNode.parentNode.style.visibility='hidden'">[x]</button>
+              </div>
+              <p>Домашняя лошадь — животное семейства непарнокопытных, одомашненный и единственный сохранившийся подвид дикой лошади, вымершей в дикой природе, за исключением небольшой популяции лошади Пржевальского.</p>
+            </div>
+            <div class="pane">
+            <div class="flex">
+              <h3>Осёл</h3>
+              <button class="remove-button" onclick="this.parentNode.parentNode.style.visibility='hidden'">[x]</button>
+            </div>
+              <p>Домашний осёл (лат. Equus asinus asinus), или ишак, — одомашненный подвид дикого осла (Equus asinus), сыгравший важную историческую роль в развитии хозяйства и культуры человека и по-прежнему широко в хозяйстве многих развивающихся стран.</p>
+            </div>
+            <div class="pane">
+              <div class="flex">
+              <h3>Кошка</h3>
+              <button class="remove-button" onclick="this.parentNode.parentNode.style.visibility='hidden'">[x]</button>
+              </div>
+              <p>Кошка, или домашняя кошка (лат. Felis silvestris catus), — домашнее животное, одно из наиболее популярных(наряду с собакой) «животных-компаньонов». Являясь одиночным охотником на грызунов и других мелких животных, кошка — социальное животное, использующее для общения широкий диапазон звуковых сигналов.</p>
+            </div>
+          </div>
+    </div>
+    <div>
+        <h1>Задача 6</h1>
+
+        <div class="slider">
+            <button class="arrow">⇦</button>
+            <ul>
+              <li><img src="https://ru.js.cx/carousel/1.png"></li>
+              <li><img src="https://ru.js.cx/carousel/2.png"></li>
+              <li><img src="https://ru.js.cx/carousel/3.png"></li>
+              <li><img src="https://ru.js.cx/carousel/4.png"></li>
+              <li><img src="https://ru.js.cx/carousel/5.png"></li>
+              <li><img src="https://ru.js.cx/carousel/6.png"></li>
+              <li><img src="https://ru.js.cx/carousel/7.png"></li>
+              <li><img src="https://ru.js.cx/carousel/8.png"></li>
+              <li><img src="https://ru.js.cx/carousel/9.png"></li>
+              <li><img src="https://ru.js.cx/carousel/10.png"></li>
+            </ul>
+            <button class="arrow">⇨</button>
+          </div>
+        
+        
+          <script>
+            // отметить картинки для удобства разработки
+            // этот код может быть удалён по вашему усмотрению
+            let i = 1;
+            for(let li of document.querySelectorAll('li')) {
+              li.style.position = 'relative';
+              li.insertAdjacentHTML('beforeend', `<span style="position:absolute;left:0;top:0">${i}</span>`);
+              i++;
+            }
+        
+            // ...ваш код, который сделает карусель рабочей
+          </script>
+    </div>
+
+
+    <script>
+        function hideText(){
+            document.getElementById('text').style.visibility=='hidden' ? document.getElementById('text').style.visibility='visible' : document.getElementById('text').style.visibility='hidden';
+        }
+
+        document.getElementById('field').onclick=function(e){
+            let ball=document.getElementById('ball');
+
+            ball.style.top=e.clientY-(parseFloat(getComputedStyle(ball).height)/2)+"px";
+            ball.style.left=e.clientX-(parseFloat(getComputedStyle(ball).width)/2)+"px";
+
+            console.log(e.clientX+" "+e.clientY);
+        }
+
+        function openMenu(){
+            menu=document.getElementById('menu');
+            menu.style.visibility=='hidden' ? menu.style.visibility='visible' : menu.style.visibility='hidden';
+            
+        }
+
+    </script>
+</body>
+</html>

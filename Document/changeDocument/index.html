@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Изменение документа</title>
+</head>
+<body>
+    
+    <ol id="elem">
+        <li>Привет</li>
+        <li>Мир</li>
+      </ol>
+
+    <div id="container">
+
+    </div>
+
+    <ul >
+        <li>Животные
+          <ul>
+            <li>Млекопитающие
+              <ul>
+                <li>Коровы</li>
+                <li>Ослы</li>
+                <li>Собаки</li>
+                <li>Тигры</li>
+              </ul>
+            </li>
+            <li>Другие
+              <ul>
+                <li>Змеи</li>
+                <li>Птицы</li>
+                <li>Ящерицы</li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li>Рыбы
+          <ul>
+            <li>Аквариумные
+              <ul>
+                <li>Гуппи</li>
+                <li>Скалярии</li>
+              </ul>
+            </li>
+            <li>Морские
+              <ul>
+                <li>Морская форель</li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      
+      <script>
+        
+        //Задача 1
+        function clear(elem) {
+            elem.innerHTML='';
+        }
+      
+        clear(elem);
+
+        //Задача 2
+
+        function createTable(){
+            let ul=document.createElement('ul');
+            bool=true;
+            while(bool){
+                key=prompt('Введите элемент');
+                if(key==null) bool=false;
+                else{
+                    li=document.createElement('li');
+                    li.insertAdjacentText('beforeend',key);
+                    ul.append(li);
+                }
+            }
+            document.body.append(ul);
+        }
+        createTable();
+
+        //Задача 3
+
+        let data = {
+          "Рыбы": {
+            "форель": {},
+            "лосось": {}
+          },
+      
+          "Деревья": {
+            "Огромные": {
+              "секвойя": {},
+              "дуб": {}
+            },
+            "Цветковые": {
+              "яблоня": {},
+              "магнолия": {}
+            }
+          }
+        };
+
+        function createTree(container,obj){
+            if (!Object.keys(obj).length) return;
+
+            let ul = document.createElement('ul');
+
+            for (let key in obj) {
+              let li = document.createElement('li');
+              li.innerHTML = key;
+            
+              let childrenUl = createTree(obj[key]);
+              if (childrenUl) {
+                li.append(childrenUl);
+              }
+          
+              ul.append(li);
+            }
+
+            return ul;
+        }
+       // createTree(container,data)
+
+        //Задача 4
+
+        let ul=document.querySelector('ul');
+        console.log(ul)
+        for(let item in ul){
+        }
+        
+        console.log(ul);
+      </script>
+</body>
+</html>

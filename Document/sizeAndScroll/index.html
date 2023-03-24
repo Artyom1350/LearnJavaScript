@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Размер и прокрутка</title>
+    <style>
+        #field {
+          width: 200px;
+          border: 10px groove black;
+          background-color: #00FF00;
+          position: relative;
+        }
+    
+        #ball {
+          position: absolute;
+          width: 60px;
+          height: 60px;
+        }
+      </style>
+</head>
+<body>
+    <div id="field">
+        <img src="https://en.js.cx/clipart/ball.svg" id="ball"> . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+      </div>
+      
+    <script>
+        let ball=document.querySelector('img');
+        let field=document.getElementById('field');
+        let width=getComputedStyle(field).width;
+        let height=getComputedStyle(field).height;
+        console.log(ball.style.width);
+        ball.style.left=((parseFloat(width)/2))-(parseFloat(getComputedStyle(ball).width)/2) +"px";
+        ball.style.top=((parseFloat(height)/2))-(parseFloat(getComputedStyle(ball).height)/2) +"px"
+</script>
+</body>
+</html>
