@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Локальное хранилище</title>
+</head>
+<body>
+    <textarea id="area"></textarea>
+
+    <button id="btn">Очистить</button>
+
+    <script>
+        btn.addEventListener('click',clear);
+        area.addEventListener('input',save);
+
+        if(localStorage.getItem('text')){
+            area.value=localStorage.getItem('text');
+        }
+
+        function clear(){
+            let area=document.getElementById('area');
+            area.value='';
+        }
+        function save(){
+            localStorage.setItem('text',area.value);
+        }
+    </script>
+</body>
+</html>

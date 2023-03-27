@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>События формы</title>
+</head>
+<body>
+    <select id="genres" onchange="change()">
+        <option value="rock">Рок</option>
+        <option value="blues" selected>Блюз</option>
+    </select>
+      
+      <script>
+        function change(){
+            return alert(genres.value + ','+ genres[genres.selectedIndex].textContent);
+        }
+        let option=document.createElement('option');
+        option.innerHTML='Классика';
+        option.value='classic';
+        option.selected=true;
+        genres.append(option);
+      </script>
+</body>
+</html>

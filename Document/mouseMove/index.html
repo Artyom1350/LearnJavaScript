@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Движение мыши</title>
+
+    <style>
+    .tooltip {
+      position: fixed;
+      z-index: 100;
+
+      padding: 10px 20px;
+
+      border: 1px solid #b3c9ce;
+      border-radius: 4px;
+      text-align: center;
+      font: italic 14px/1.3 sans-serif;
+      color: #333;
+      background: #fff;
+      box-shadow: 3px 3px 3px rgba(0, 0, 0, .3);
+    }
+
+    #house {
+      margin-top: 50px;
+      width: 400px;
+      border: 1px solid brown;
+    }
+
+    #roof {
+      width: 0;
+      height: 0;
+      border-left: 200px solid transparent;
+      border-right: 200px solid transparent;
+      border-bottom: 20px solid brown;
+      margin-top: -20px;
+    }
+
+    p {
+      text-align: justify;
+      margin: 10px 3px;
+    }
+  </style>
+</head>
+<body>
+    <div data-tooltip="Здесь домашний интерьер" id="house">
+        <div data-tooltip="Здесь крыша" id="roof"></div>
+    
+        <p>Жили-были на свете три поросенка. Три брата. Все одинакового роста, кругленькие, розовые, с одинаковыми веселыми хвостиками.</p>
+    
+        <p>Даже имена у них были похожи. Звали поросят: Ниф-Ниф, Нуф-Нуф и Наф-Наф. Все лето они кувыркались в зеленой траве, грелись на солнышке, нежились в лужах.</p>
+    
+        <p>Но вот наступила осень. Солнце уже не так сильно припекало, серые облака тянулись над пожелтевшим лесом.</p>
+    
+        <p>- Пора нам подумать о зиме, - сказал как-то Наф-Наф. <a href="https://ru.wikipedia.org/wiki/%D0%A2%D1%80%D0%B8_%D0%BF%D0%BE%D1%80%D0%BE%D1%81%D1%91%D0%BD%D0%BA%D0%B0" data-tooltip="Читать далее…">Наведи курсор на меня</a></p>
+    
+    </div>
+
+    <div id="clock" style="background-color: yellow; border: 1px solid black; width: fit-content; padding:0 5px 0 5px; margin: 5px 0 0 0;">
+        <h3><span style="color: red;">12</span> : <span style="color: blue;">30</span> : <span style="color: green;">00</span></h3>
+    </div>
+
+    <script>
+        
+        class HoverIntent{
+            constructor({
+                sensetivity=0.1,
+                interval=100,
+                clock,
+                over,
+                out,
+            }){
+                this.sensetivity=sensetivity;
+                this.interval=interval;
+                this.item=clock;
+                this.over=over;
+                this.out=out;
+
+                this.onMouseOver=this.onMouseOver.bind(this);
+                this.onMouseMove=this.onMouseMove.bind(this);
+                this.onMouseOut=this.onMouseOut.bind(this);
+
+                this.trackSpeed=this.trackSpeed.bind(this);
+
+                clock.addEventListener("mouseover",this.onMouseOver);
+                clock.addEventListener("mouseout",this.onMouseOut);
+            }
+
+            onMouseOver(event){
+                if(this.isOverElement) return;
+
+                this.isOverElement=true;
+                this.prevX=event.pageX;
+                this.prevY=event.pageY;
+                this.prevDate=Date.now();
+
+                clock.addEventListener('mousemove',this.onMouseMove);
+                this.checkSpeedInterval=setInterval(this.trackSpeed,this.interval);
+            }
+
+            onMouseOut(event){
+                if(!event.relatedTarget || !clock.contains(event.relatedTarget)){
+                    this.isOverElement=false;
+                    this.item.removeEventListener('mousemove',this.onMouseMove);
+                    clearInterval(this.checkSpeedInterval);
+                    if(this.isHover){
+                        this.out.call(this.item,event);
+                        this.isHover=false;
+                    }
+                }
+            }
+            onMouseMove(event){
+                this.lastX=event.pageX;
+                this.lasty=event.pageY;
+                this.lastDate=Date.now();
+            }
+
+            trackSpeed(){
+                let speed;
+
+                if(!this.lastDate || this.lastDate==this.prevDate){
+                    speed=0;
+                } else{
+                    speed=Math.sqrt(Math.pow(this.prevX - this.lastX,2)+Math.pow(this.prevY-this.lasty,2))/(this.lastDate-this.prevDate);   
+                }
+
+                if(speed<this.sensetivity){
+                    clearInterval(this.checkSpeedInterval);
+                    this.isHover=true;
+                    this.over.call(this.item);
+                } else{
+                    this.prevX=this.lastX;
+                    this.prevY=this.lastY;
+                    this.prevDate=this.lastDate;
+                }
+            }
+
+            destroy(){
+                item.removeEventListener('mousemove', this.onMouseMove);
+                item.removeEventListener('mouseover', this.onMouseOver);
+                item.removeEventListener('mouseout', this.onMouseOut);
+            }
+        }
+
+        let tooltip1 = document.createElement('div');
+        tooltip1.className = "tooltip";
+        tooltip1.innerHTML = "Подсказка";
+        setTimeout(function(){
+            new HoverIntent({
+                clock,
+                over() {
+                  tooltip1.style.left = clock.getBoundingClientRect().left + 'px';
+                  tooltip1.style.top = clock.getBoundingClientRect().bottom + 5 + 'px';
+                  document.body.append(tooltip1);
+                },
+                out() {
+                  tooltip1.remove();
+                }
+            });
+        },2000);
+
+
+        
+
+
+
+        let tooltip;
+        document.onmouseover=function(event){
+            let currentItem=event.target.closest('[data-tooltip]');
+            if(!currentItem) return;
+            tooltip=showToolTip(currentItem, currentItem.dataset.tooltip);
+
+        }
+        document.onmouseout=function(){
+            if(tooltip){
+                tooltip.remove();
+                tooltip=false;
+            }
+        }
+        
+        function showToolTip(item,html){
+            let toolTipElement=document.createElement('div');
+            toolTipElement.className='tooltip';
+            toolTipElement.innerHTML=html;
+            document.body.append(toolTipElement);
+
+            let coords=item.getBoundingClientRect();
+
+            let left=coords.left+(item.offsetWidth-toolTipElement.offsetWidth)/2;
+            if(left<0) left=0;
+            let top=coords.top-toolTipElement.offsetHeight-5;
+            if(top<0){
+                let top=coords.top+toolTipElement.offsetHeight+5;
+            }
+            toolTipElement.style.top=top+"px";
+            toolTipElement.style.left=left+"px";
+
+            return toolTipElement;
+
+        }
+          
+
+    </script>
+
+</body>
+</html>

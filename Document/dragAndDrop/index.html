@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drag and Drop</title>
+    <style>
+        .slider {
+          border-radius: 5px;
+          background: #E0E0E0;
+          background: linear-gradient(left top, #E0E0E0, #EEEEEE);
+          width: 310px;
+          height: 15px;
+          margin: 5px;
+        }
+
+        .thumb {
+          width: 10px;
+          height: 25px;
+          border-radius: 3px;
+          position: relative;
+          left: 10px;
+          top: -5px;
+          background: blue;
+          cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="slider" class="slider">
+        <div class="thumb"></div>
+    </div>
+
+    <script>
+        slider.children[0].ondragstart=function(){
+            return false;
+        }
+        let border= getComputedStyle(slider).width;
+        slider.children[0].style.left=0;
+        slider.children[0].onmousedown=function(event){
+            function onMouseMove(event){
+                if(parseFloat(slider.children[0].style.left)<parseFloat(slider.offsetWidth)){
+                    console.log(slider.children[0].style.left)
+                    slider.children[0].style.left=event.pageX-slider.children[0].offsetWidth+"px";
+                }
+                else{
+                    slider.children[0].style.left=border+"px";
+                }                  
+            }
+            slider.addEventListener('mousemove',onMouseMove);
+
+            slider.onmouseup=function(){
+                slider.removeEventListener('mousemove',onMouseMove);
+            }
+        };
+    </script>
+</body>
+</html>

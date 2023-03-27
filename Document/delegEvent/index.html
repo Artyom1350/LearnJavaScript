@@ -67,6 +67,7 @@
         
           <script>
             document.addEventListener('click',function(event){
+              console.log(event.target.dataset.close)
               if(event.target.dataset.close!=undefined){
                 event.target.parentNode.style.visibility='hidden';
               }
