@@ -14,17 +14,21 @@
 </head>
 <body>
     <div class="container">
-        <header class="d-flex align-items-center justify-content-center py-3 border-bottom">
-            <a href="#" class="text-decoration-none me-md-auto md-0"><p class="p-0 text-dark fs-4">MoneyCounter</p></a>
-            <ul class="nav">
-                <ul class="nav-item"><a class="nav-link active" href="#">Главная</a></ul>
-                <ul class="nav-item"><a class="nav-link text-secondary" href="#">Расходы</a></ul>
-                <ul class="nav-item"><a class="nav-link text-secondary" href="#">Доходы</a></ul>
-                <ul class="nav-item"><a class="nav-link text-secondary" href="#">Подсчет</a></ul>
-            </ul>
-        </header>
+        <div class="container fixed-top bg-white">
+            <header class="d-flex align-items-center justify-content-center py-3 border-bottom">
+                <a href="#" class="text-decoration-none me-md-auto md-0"><p class="p-0 text-dark fs-4">MoneyCounter</p></a>
+                <ul class="nav">
+                    <ul class="nav-item"><a class="nav-link active" onclick="window.scrollTo(0,res.getBoundingClientRect().y-20);" data-scroll="res">Результат</a></ul>
+                    <ul class="nav-item"><a class="nav-link text-secondary" onclick="window.scrollTo(0,week.getBoundingClientRect().y-20);" data-scroll="week">График за неделю</a></ul>
+                    <ul class="nav-item"><a class="nav-link text-secondary" onclick="window.scrollTo(0,all.getBoundingClientRect().y-20);" data-scroll="all">График за все время</a></ul>
+                    <ul class="nav-item"><a class="nav-link text-secondary" onclick="window.scrollTo(0,admin.getBoundingClientRect().y-20);" data-scroll="admin">Управление расходами и доходами</a></ul>
+                </ul>
+            </header>
+        </div>
         <main>
-            <div class="mt-lg-3 mb-lg-3">
+            <script>
+            </script>
+            <div id='res'class="mb-lg-3" style="margin-top: 100px;">
                 <h1 class="h1 text-center">Результат за последние 30 дней</h1>
                 <div class="d-flex flex-column align-items-center justify-items-center">
                     <div id="resMounth">
@@ -35,12 +39,12 @@
                 </div>
             </div>
 
-            <div>
+            <div id="week">
                 <h1>График расходов за последнюю неделю</h1>
                 <canvas class="my-4 w-100" id="chart" width="900" height="380"></canvas>
             </div>
-            <div>
-                <h1 class="text-center mb-lg-5">Соотношение всех расходов к доходам</h1>
+            <div id="all">
+                <h1 class="text-center mb-lg-5"">Соотношение всех расходов к доходам</h1>
                 <div id="chartAll" class="d-flex justify-content-center border-bottom">
                     <div class="d-flex justify-content-between align-items-end" style="width:40%">
                         <div style="width:40%" class="d-flex flex-column align-items-center">
@@ -59,7 +63,7 @@
 
 
 
-            <div class="mt-lg-5">
+            <div class="mt-lg-5" id="admin">
                 <h1 class="h1 text-center mb-lg-5">Управление расходами и зачислениями</h1>
                 <div class="">
                     <div class="mb-lg-5">
@@ -187,8 +191,8 @@
                 </div>
             </div>
         </main>
-        <footer>
-
+        <footer class="footer pt-lg-3 mt-lg-3 pb-lg-3 bg-light">
+            <p class="p-0 text-dark fs-4 text-center">MoneyCounter</p>
         </footer>
     </div>
 
