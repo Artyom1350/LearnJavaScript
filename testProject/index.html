@@ -36,12 +36,23 @@
             </div>
 
             <div>
-                <h1>График затрат за последнюю неделю</h1>
+                <h1>График расходов за последнюю неделю</h1>
                 <canvas class="my-4 w-100" id="chart" width="900" height="380"></canvas>
             </div>
             <div>
-                <h1>Расходы за все время</h1>
-
+                <h1 class="text-center mb-lg-5">Соотношение всех расходов к доходам</h1>
+                <div id="chartAll" class="d-flex justify-content-center border-bottom">
+                    <div class="d-flex justify-content-between align-items-end" style="width:40%">
+                        <div style="width:40%" class="d-flex flex-column align-items-center">
+                            <p class="text-success">Доходы ()</p>
+                            <div style="width: 100%; height: 400px;" class="bg-success"></div>
+                        </div>
+                        <div style="width:40%" class="d-flex flex-column align-items-center">
+                            <p class="text-danger">Расходы ()</p>
+                            <div style="width: 100%; height: 400px;" class="bg-danger"></div>    
+                        </div>
+                    </div>
+                </div>
             </div>
 
 
@@ -203,6 +214,7 @@
             viewCosts(); 
             viewResult(); 
             createChart();
+            createChartAll();
         };
 
         //Добавление нового товара в таблицу с расходами
@@ -655,6 +667,37 @@
                 amount:amount,
                 date:Date.now(),
             }
+        }
+
+        //График всех доходов и расходов
+
+        async function createChartAll(){
+            let incomes=await getIncomes();
+            let costs=await getCosts();
+            let incomeSumm=0;
+            let costsSumm=0;
+
+            for(let i=0;i<incomes.length;i++){
+                incomeSumm+=+incomes[i].amount;
+            }
+
+            for(let i=0;i<costs.length;i++){
+                for(let j=0;j<costs[i].items.length;j++){
+                    costsSumm+=+costs[i].items[j].price;
+                }
+            }
+            let pMas=chartAll.getElementsByTagName('p');
+            pMas[0].innerHTML=`Доходы (${incomeSumm})`;
+            pMas[1].innerHTML=`Расходы (${costsSumm})`;
+
+            let green=chartAll.children[0].children[0].children[1];
+            let red=chartAll.children[0].children[1].children[1];
+
+
+            let ratio=incomeSumm/costsSumm;
+            ratio=costsSumm/incomeSumm;
+            red.style.height=(400*ratio).toFixed()+"px";
+
         }
 
         //График
