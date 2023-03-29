@@ -24,8 +24,32 @@
             </ul>
         </header>
         <main>
+            <div class="mt-lg-3 mb-lg-3">
+                <h1 class="h1 text-center">Результат за последние 30 дней</h1>
+                <div class="d-flex flex-column align-items-center justify-items-center">
+                    <div id="resMounth">
+                        <p>Общие доходы за месяц составляют: <span class="text-success"><b>da</b></span></p>
+                        <p>Общие расходы за месяц составляют: <span class="text-danger"><b>net</b></p>
+                        <p></p>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <h1>График затрат за последнюю неделю</h1>
+                <canvas class="my-4 w-100" id="chart" width="900" height="380"></canvas>
+            </div>
+            <div>
+                <h1>Расходы за все время</h1>
+
+            </div>
+
+
+
+
+
             <div class="mt-lg-5">
-                <h1 class="h1 text-center mb-lg-5">Все расходы и доходы</h1>
+                <h1 class="h1 text-center mb-lg-5">Управление расходами и зачислениями</h1>
                 <div class="">
                     <div class="mb-lg-5">
                         <h2 class="mb-3">Расходы</h2>
@@ -45,7 +69,7 @@
 
                             </tbody>
                         </table>
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addNewCostModal">Добавить</button>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addNewCostModal" onclick="clearModalCosts()">Добавить</button>
                     </div>
                     <div>
                         <h2 class="mb-3">Зачисления</h2>
@@ -54,16 +78,15 @@
                                 <tr>
                                     <th>Наименование</th>
                                     <th>Количество</th>
+                                    <th>Дата</th>
+                                    <th></th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Пример</td>
-                                    <td>30000рлк</td>
-                                </tr>
                             </tbody>
                         </table>
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addNewIncomeModal">Добавить</button>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addNewIncomeModal" onclick="clearModalIncome()">Добавить</button>
                     </div>
                 </div>
             </div>
@@ -101,14 +124,16 @@
                                 <tr>
                                     <th>Название</th>
                                     <th>Количество</th>
-                                    <th>Цена</th>    
+                                    <th>Цена</th>
+                                    <th></th>   
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <th><input type="text" class="form-control" name="tovarName"></th>
-                                    <th><input type="text" class="form-control" name="tovarCount"></th>
-                                    <th><input type="text" class="form-control" name="tovarPrice"></th>
+                                    <td><input type="text" class="form-control" name="tovarName"></td>
+                                    <td><input type="text" class="form-control" name="tovarCount"></td>
+                                    <td><input type="text" class="form-control" name="tovarPrice"></td>
+                                    <td><button class="btn btn-danger">Удалить</button></td>
                                 </tr>
                             </tbody>
                           </table>
@@ -119,7 +144,7 @@
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                      <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="addNewCost()">Добавить</button>
+                      <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="addNewCost()" id="addBtnModalCost">Добавить</button>
                     </div>
                   </div>
                 </div>
@@ -145,12 +170,11 @@
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                      <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="clearModalIncome()">Добавить</button>
+                      <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="addNewIncome()" id="addBtnModalIncome">Добавить</button>
                     </div>
                   </div>
                 </div>
             </div>
-
         </main>
         <footer>
 
@@ -164,7 +188,8 @@
 
     <!-- Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-
+    <!-- Chart -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script>
     <script>
         //Инициализация бд
         let db;
@@ -174,14 +199,17 @@
                 db.createObjectStore('costs',{keyPath: 'id'});
                 db.createObjectStore('incomes',{keyPath: 'id'});
             });  
-            viewCosts();  
+            viewIncomes();
+            viewCosts(); 
+            viewResult(); 
+            createChart();
         };
 
         //Добавление нового товара в таблицу с расходами
         function addTovarToTable(){
             let tbody=tableCostItem.children[1];
             let tr=document.createElement('tr');
-            tr.innerHTML="<th><input type='text' class='form-control' name='tovarName'></th><th><input type='text' class='form-control' name='tovarCount'></th><th><input type='text' class='form-control' name='tovarPrice'></th>";
+            tr.innerHTML="<td><input type='text' class='form-control' name='tovarName'></td><td><input type='text' class='form-control' name='tovarCount'></td><td><input type='text' class='form-control' name='tovarPrice'></td><td><button class='btn btn-danger' onclick='removeStroke(event)'>Удалить</button></td>";
             tbody.append(tr);
         }
 
@@ -190,25 +218,39 @@
             console.log('modal clear!');
             store.value='';
             category.value='';
+            addBtnModalCost.innerHTML='Добавить';
+            addBtnModalCost.onclick=function(){
+                addNewCost();
+            }
+            addNewCostModal.getElementsByTagName('h5')[0].innerHTML="Добавление нового расхода";
             let tbody=tableCostItem.children[1];
-            tbody.innerHTML="<th><input type='text' class='form-control' name='tovarName'></th><th><input type='text' class='form-control' name='tovarCount'></th><th><input type='text' class='form-control' name='tovarPrice'></th>";
+            tbody.innerHTML="<td><input type='text' class='form-control' name='tovarName'></td><td><input type='text' class='form-control' name='tovarCount'></th><th><input type='text' class='form-control' name='tovarPrice'></td><td><button class='btn btn-danger' onclick='removeStroke(event)'>Удалить</button></td>";
         }
 
         //Очистка модального окна доходов
         function clearModalIncome(){
             nameIncome.value='';
             countIncome.value='';
+            addBtnModalIncome.innerHTML='Добавить';
+            addNewIncomeModal.getElementsByTagName('h5')[0].innerHTML="Добавление нового дохода";
+            addBtnModalIncome.onclick=function(){
+                addNewIncome();
+            }
         }
 
 
 
         //Вывод расходов в таблицу
         async function viewCosts(){
+            createChart()
             let tbody=costsTable.children[1];
             let costs=await getCosts();
+            viewResult();
             tbody.innerHTML='';
+            let summ=0;
             if(costs.length){
                 for(let i=0;i<costs.length;i++){
+                    summ+=+costs[i].fullprice;
                     //Создание tr и td
                     let tr=document.createElement('tr');
                     let tdStore=document.createElement('td');
@@ -225,8 +267,13 @@
                     redactBtn.value=costs[i].id;
                     redactBtn.className="btn btn-primary";
                     redactBtn.textContent="Редактировать";
-                    redactBtnTd.append(redactBtn);
+                    redactBtn.setAttribute('data-bs-target',"#addNewCostModal");
+                    redactBtn.setAttribute('data-bs-toggle',"modal");
+                    redactBtn.onclick=function(){
+                        viewRedactCost(this.value);
+                    };
 
+                    redactBtnTd.append(redactBtn);
                     //кнопка удаления
                     let delBtn=document.createElement('button');
                     delBtn.value=costs[i].id;
@@ -252,7 +299,7 @@
                     }
                     items=items.slice(0,items.length-2);
                     tdTovars.innerHTML=items;
-                    tdPrice.innerHTML=costs[i].fullprice;
+                    tdPrice.innerHTML=costs[i].fullprice+' Рлк.';
 
                     //занесение в tr
                     tr.append(tdStore);
@@ -266,14 +313,18 @@
                     //занесение в таблицу
                     tbody.append(tr);
                 }
+                let summTr=document.createElement('tr');
+                summTr.innerHTML=`<tr><td><b>Итого</b></td><td></td><td></td><td> ${summ} Рлк. </td><td></td><td></td><td></td></tr>`
+                tbody.append(summTr);
             }
             else{
-                tableCostItem.innerHTML='Записей еще нет!'
+                tbody.innerHTML='Записей еще нет!'
             }
         }
 
         //Добавление новой затраты
         async function addNewCost(){
+            
             let items=tableCostItem.children[1].children;
             let tovars=[];
             for(let i=0;i<items.length;i++){
@@ -291,14 +342,212 @@
 
         //Удаление затраты          
         async function removeCost(id){
-            console.log(id);
             let tr=db.transaction('costs','readwrite');
             let costsStore=tr.objectStore('costs');            
             await costsStore.delete(+id);
             viewCosts();
         }
 
+        //Вывод всех доходов
 
+        async function viewIncomes(){
+            let tbody=incomeTable.children[1];
+            let incomes=await getIncomes();
+            viewResult();
+            if(incomes.length){
+                let summ=0;
+                tbody.innerHTML='';
+                for(let i=0;i<incomes.length;i++){
+                    summ+=incomes[i].amount;
+
+                    let tr=document.createElement('tr');
+                    let nameTd=document.createElement('td');
+                    let amountTd=document.createElement('td');
+                    let dateTd=document.createElement('td');
+                    let redactBtnTd=document.createElement('td');
+                    let delBtnTd=document.createElement('td');
+
+                    //кнопки для td
+                    //кнопка редактирования
+                    let redactBtn=document.createElement('button');
+                    redactBtn.value=incomes[i].id;
+                    redactBtn.className="btn btn-primary";
+                    redactBtn.textContent="Редактировать";
+                    redactBtn.setAttribute('data-bs-target',"#addNewIncomeModal");
+                    redactBtn.setAttribute('data-bs-toggle',"modal");
+                    redactBtn.onclick=function(){
+                        viewRedactIncome(this.value);
+                    };
+
+                    redactBtnTd.append(redactBtn);
+
+                    //кнопка удаления
+                    let delBtn=document.createElement('button');
+                    delBtn.value=incomes[i].id;
+                    delBtn.className="btn btn-danger";
+                    delBtn.textContent="Удалить";
+                    delBtn.onclick=function(){
+                        if(confirm('Точно хотите удалить?')){
+                            removeIncome(this.value);
+                        }
+                    };
+                    delBtnTd.append(delBtn);
+
+                    nameTd.innerHTML=incomes[i].name;
+                    amountTd.innerHTML=incomes[i].amount+ ' Рлк.';
+                    let date=new Date(incomes[i].date);
+                    dateTd.innerHTML=date.getFullYear()+'.'+date.getMonth()+'.'+date.getDate();
+
+                    tr.append(nameTd);
+                    tr.append(amountTd);
+                    tr.append(dateTd);
+                    tr.append(redactBtnTd);
+                    tr.append(delBtnTd);
+
+                    tbody.append(tr);
+                }
+                let summTr=document.createElement('tr');
+                summTr.innerHTML=`<tr><td><b>Итого</b></td><td>${summ} Рлк.</td><td></td><td></td><td></td></tr>`;
+                tbody.append(summTr);
+            }
+            else{
+                tbody.innerHTML="Доходов пока что нет"
+            }
+        }
+
+
+        //Добавление нового дохода
+        async function addNewIncome(){
+            let obj=createIncome(nameIncome.value, +countIncome.value);
+            await addIncome(obj);
+            viewIncomes();
+            clearModalIncome();
+        }
+
+        //Удаление дохода
+        async function removeIncome(id){
+            let tr=db.transaction('incomes','readwrite');
+            let costsStore=tr.objectStore('incomes');            
+            await costsStore.delete(+id);
+            viewIncomes();
+        }
+
+        //Показ редактируемого расхода
+        async function viewRedactCost(id){
+            addBtnModalCost.innerHTML='Изменить';
+            addBtnModalCost.value=id;
+            addBtnModalCost.onclick=function(){
+                redactCost(this.value);
+            }
+            addNewCostModal.getElementsByTagName('h5')[0].innerHTML="Изменение расхода";
+
+            let obj=await getCosts(id);
+            store.value=obj.store;
+            category.value=obj.category;
+            let tbody=tableCostItem.children[1];
+            tbody.innerHTML='';
+            for(let i=0;i<obj.items.length;i++){
+                let tr=document.createElement('tr');
+                tr.innerHTML=`<td><input type='text' class='form-control' name='tovarName' value='${obj.items[i].name}'></td><td><input type='text' class='form-control' name='tovarCount' value='${obj.items[i].amount}'></td><td><input type='text' class='form-control' name='tovarPrice' value='${obj.items[i].price}'></td><td><button class='btn btn-danger' onclick='removeStroke(event)'>Удалить</button></td>`
+                tbody.append(tr);
+            }
+        }
+
+        //Удаление товара
+
+        function removeStroke(event){
+            console.log(event.target.parentNode.parentNode.remove());
+        }
+
+        //Редактирование расхода
+        async function redactCost(id){
+            let cost=await getCosts(id);
+
+            cost.store=store.value;
+            cost.category=category.value;
+            
+            let items=tableCostItem.children[1].children;
+            let tovars=[];
+            for(let i=0;i<items.length;i++){
+                tovars.push({name: items[i].getElementsByTagName('input')[0].value, 
+                    amount: items[i].getElementsByTagName('input')[1].value,
+                    price: items[i].getElementsByTagName('input')[2].value
+                })
+            }
+            if(items.length>1){
+                //cost.fullprice=tovars.reduce((a,b)=>(+a.price + +b.price));
+                cost.fullprice=summPriceItems(tovars);
+            }
+            else{
+                cost.fullprice=tovars[0].price;
+            }
+            cost.items=tovars;
+            redCost(cost);
+
+            clearModalCosts();
+            viewCosts();
+        }
+
+        function summPriceItems(items){
+            let summ=0;
+            for(let i=0;i<items.length;i++){
+                summ+=+items[i].price;
+            }
+            return summ;
+        }
+
+        //Показ редактируемого дохода
+        async function viewRedactIncome(id){
+            let income=await getIncomes(id);
+
+            nameIncome.value=income.name;
+            countIncome.value=income.amount;
+            addBtnModalIncome.innerHTML='Изменить';
+            addBtnModalIncome.value=id;
+            addBtnModalIncome.onclick=function(){
+                redactIncome(this.value);
+            }
+            addNewIncomeModal.getElementsByTagName('h5')[0].innerHTML="Изменение дохода";
+        } 
+        //Редактирование дохода
+        async function redactIncome(id){
+            let income=await getIncomes(id);
+            income.name=nameIncome.value;
+            income.amount=+countIncome.value;
+            await redIncome(income);
+            clearModalIncome();
+            viewIncomes();
+        }
+
+        //Показ результата за последние 30 дней(потом допишу)
+        async function viewResult(){
+            let incomes=await getIncomes();
+            let costs=await getCosts();
+            let incomeSumm=0;
+            let costsSumm=0;
+
+            for(let i=0;i<incomes.length;i++){
+                incomeSumm+=+incomes[i].amount;
+            }
+            for(let i=0;i<costs.length;i++){
+                for(let j=0;j<costs[i].items.length;j++){
+                    costsSumm+=+costs[i].items[j].price;
+                }
+            }
+            let out=resMounth.getElementsByTagName('b');
+            out[0].innerHTML=incomeSumm+' Рлк.';
+            out[1].innerHTML=costsSumm+' Рлк.';
+
+            if(incomeSumm>costsSumm){
+                resMounth.children[2].innerHTML='<span class="text-success">Так держать! Ваши доходы превышают затраты<span>'
+            }
+            else if(incomeSumm<costsSumm){
+                resMounth.children[2].innerHTML='<span class="text-danger">Ваши расходы превышают доходы, но можно лучше<span>'
+            }
+            else{
+                resMounth.children[2].innerHTML='<span class="text-warning">Не пониманте...<span>'
+            }
+        }
 
 
 
@@ -312,23 +561,31 @@
 
 
         //Получение затрат
-        async function getCosts(){
+        async function getCosts(id){
             let tr=db.transaction('costs');
             let costsStore=tr.objectStore('costs');
+            if(id){
+                let cost=costsStore.get(+id);
+                return cost;
+            }
             costs=await costsStore.getAll();
             return costs;
         };
 
         //Получение доходов
-        async function getIncomes(){
+        async function getIncomes(id){
             let tr=db.transaction('incomes');
             let incomesStore=tr.objectStore('incomes');
+            if(id){
+                let income=incomesStore.get(+id);
+                return income;
+            }
             let incomes=incomesStore.getAll();
             return incomes;
         }
 
         //Добавление расхода
-        async function addCost(obj,id){
+        async function addCost(obj){
             let tx=db.transaction('costs','readwrite');
             let request =await tx.objectStore('costs').add(obj);
             request.onerror=function(event){
@@ -338,10 +595,25 @@
             }
         };
 
-        //Добавление дохода
-        async function addIncome(name,amount){
+        //Изменение расхода
+        async function redCost(obj){
+            let tx=db.transaction('costs','readwrite');
+            let request =await tx.objectStore('costs').put(obj);
+            //request.onerror=function(event){
+            //    if(event.error.name=='ConstraintError'){
+            //        //Позже допишу
+            //    }
+            //}
+        };
+        async function redIncome(obj){
             let tx=db.transaction('incomes','readwrite');
-            let request=await tx.objectStore('incomes').add(createIncome(name,amount));
+            let request =await tx.objectStore('incomes').put(obj);  
+        }
+
+        //Добавление дохода
+        async function addIncome(obj){
+            let tx=db.transaction('incomes','readwrite');
+            let request=await tx.objectStore('incomes').add(obj);
             request.onerror=function(event){
                 if(event.error.name=='ConstraintError'){
                     //Позже допишу
@@ -358,9 +630,10 @@
         //Расход
         function createCost(store,category,items){
             let fullPrice;
-            console.log(items);
+            //console.log(items);
             if(items.length>1){
-                fullPrice=items.reduce((a,b)=>(+a.price+ +b.price));
+                //fullPrice=items.reduce((a,b)=>(+a.price + +b.price));
+                fullPrice=summPriceItems(items);
             }
             else{
                 fullPrice=items[0].price;
@@ -382,6 +655,62 @@
                 amount:amount,
                 date:Date.now(),
             }
+        }
+
+        //График
+        let chart;
+        async function createChart() {
+
+            let costs=await getCosts();
+
+            let data=new Map();
+            for(let i=0;i<costs.length;i++){
+                date=new Date(costs[i].date);
+                date=getWeekDay(date);
+
+                if(data.has(date)){
+                    data.set(date,+data.get(date) + +costs[i].fullprice); 
+                }
+                else{
+                    data.set(date,costs[i].fullprice);
+                }
+            }
+            if(chart){
+                chart.destroy();
+            }
+            var ctx = document.getElementById('chart');
+
+            chart = new Chart(ctx, {
+              type: 'line',
+              data: {
+                labels: Array.from(data.keys()),
+                datasets: [{
+                  data: Array.from(data.values()),
+                  lineTension: 0,
+                  backgroundColor: 'transparent',
+                  borderColor: '#007bff',
+                  borderWidth: 4,
+                  pointBackgroundColor: '#007bff'
+                }]
+              },
+              options: {
+                scales: {
+                  yAxes: [{
+                    ticks: {
+                      beginAtZero: false
+                    }
+                  }]
+                },
+                legend: {
+                  display: false
+                }
+              }
+            });
+        }
+
+        function getWeekDay(date) {
+            let days = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
+            return days[date.getDay()];
         }
 
         
