@@ -1,33 +1,62 @@
-//Инициализация бд
-let db;
-init();
-async function init(){
-    db=await idb.openDb('moneyCounterDb',1,db=>{
-        db.createObjectStore('costs',{keyPath: 'id'});
-        db.createObjectStore('incomes',{keyPath: 'id'});
-    });    
-};
+ //Инициализация бд
+ let db;
+ init();
+ async function init(){
+     db=await idb.openDb('moneyCounterDb',1,db=>{
+         db.createObjectStore('costs',{keyPath: 'id'});
+         db.createObjectStore('incomes',{keyPath: 'id'});
+     });  
+     viewIncomes();
+     viewCosts(); 
+     viewResult(); 
+     createChart();
+     createChartAll();
+ };
+
+  //Удаление затраты          
+async function removeCost(id){
+    let tr=db.transaction('costs','readwrite');
+    let costsStore=tr.objectStore('costs');            
+    await costsStore.delete(+id);
+    viewCosts();
+}
+
+//Удаление дохода
+async function removeIncome(id){
+    let tr=db.transaction('incomes','readwrite');
+    let costsStore=tr.objectStore('incomes');            
+    await costsStore.delete(+id);
+    viewIncomes();
+}
 
 //Получение затрат
-export async function getCosts(){
+async function getCosts(id){
     let tr=db.transaction('costs');
     let costsStore=tr.objectStore('costs');
-    let costs=costsStore.getAll();
+    if(id){
+        let cost=costsStore.get(+id);
+        return cost;
+    }
+    costs=await costsStore.getAll();
     return costs;
 };
 
 //Получение доходов
-async function getIncomes(){
+async function getIncomes(id){
     let tr=db.transaction('incomes');
     let incomesStore=tr.objectStore('incomes');
+    if(id){
+        let income=incomesStore.get(+id);
+        return income;
+    }
     let incomes=incomesStore.getAll();
     return incomes;
 }
 
 //Добавление расхода
-async function addCost(store,category,items){
+async function addCost(obj){
     let tx=db.transaction('costs','readwrite');
-    let request =await tx.objectStore('costs').add(createCost(store,category,items));
+    let request =await tx.objectStore('costs').add(obj);
     request.onerror=function(event){
         if(event.error.name=='ConstraintError'){
             //Позже допишу
@@ -35,10 +64,22 @@ async function addCost(store,category,items){
     }
 };
 
-//Добавление дохода
-async function addIncome(name,amount){
+//Изменение расхода
+async function redCost(obj){
+    let tx=db.transaction('costs','readwrite');
+    await tx.objectStore('costs').put(obj);
+};
+
+//Изменение дохода
+async function redIncome(obj){
     let tx=db.transaction('incomes','readwrite');
-    let request=await tx.objectStore('incomes').add(createIncome(name,amount));
+    await tx.objectStore('incomes').put(obj);  
+}
+
+//Добавление дохода
+async function addIncome(obj){
+    let tx=db.transaction('incomes','readwrite');
+    let request=await tx.objectStore('incomes').add(obj);
     request.onerror=function(event){
         if(event.error.name=='ConstraintError'){
             //Позже допишу
@@ -46,29 +87,39 @@ async function addIncome(name,amount){
     }
 }
 
-//Рандомный id
-function getRandomId(){
-    return +(1+Math.random()*(1e6-1)).toFixed();
-}
-//Объекты для добавления
+//Объекты
 
 //Расход
-function createCost(store,category,items){
+function createCost(store,category,items,date){
+    let fullPrice;
+    if(items.length>1){
+        fullPrice=summPriceItems(items);
+    }
+    else{
+        fullPrice=items[0].price;
+    }
     return {
         id:getRandomId(),
         store:store,
         category:category,
         items:items,
-        fullprice:items.reduce((a,b)=>(a.price+b.price)),
-        date:Date.now(),
+        fullprice:fullPrice,
+        date:new Date(date).getTime(),
     }
 }
+
 //Доход
-function createIncome(name,amount){
+function createIncome(name,amount,date){
     return {
         id:getRandomId(),
         name:name,
         amount:amount,
-        date:Date.now(),
+        date:new Date(date).getTime(),
     }
 }
+
+
+
+
+
+

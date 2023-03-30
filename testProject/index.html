@@ -56,11 +56,6 @@
                     </div>
                 </div>
             </div>
-
-
-
-
-
             <div class="mt-lg-5" id="admin">
                 <h1 class="h1 text-center mb-lg-5">Управление расходами и зачислениями</h1>
                 <div class="">
@@ -103,16 +98,7 @@
                     </div>
                 </div>
             </div>
-
-
-
-
-
-
-
-
             <!-- ModalWindows -->
-
             <!-- AddNewCostModal -->
             <div class="modal fade" id="addNewCostModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
@@ -162,7 +148,6 @@
                   </div>
                 </div>
             </div>
-
             <!-- addIncomeTable -->
             <div class="modal fade" id="addNewIncomeModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
@@ -197,38 +182,27 @@
             <p class="p-0 text-dark fs-4 text-center">MoneyCounter</p>
         </footer>
     </div>
-
-    
-    
-    
-
-
+    <!-- DB -->
+    <script src="js/db/db.js"></script>
+    <!-- Cruds -->
+    <script src="js/crud/crudCosts.js"></script>
+    <script src="js/crud/crudIncomes.js"></script>
+    <!-- Views -->
+    <script src="js/views/viewCosts.js"></script>
+    <script src="js/views/viewIncomes.js"></script>
+    <!-- ModalClears -->
+    <script src="js/clears.js"></script>
+    <!-- additional functions -->
+    <script src="js/functions.js"></script>
+    <!-- validate -->
+    <script src="js/validation.js"></script>
+    <!-- charts -->
+    <script src="js/charts.js"></script>
     <!-- Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <!-- Chart -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script>
     <script>
-        //Инициализация бд
-        let db;
-        init();
-        async function init(){
-            db=await idb.openDb('moneyCounterDb',1,db=>{
-                db.createObjectStore('costs',{keyPath: 'id'});
-                db.createObjectStore('incomes',{keyPath: 'id'});
-            });  
-            viewIncomes();
-            viewCosts(); 
-            viewResult(); 
-            createChart();
-            createChartAll();
-        };
-        //валидация при вводе
-        document.addEventListener('keyup',function(event){
-            if(event.target.dataset.validate!=undefined){
-                validate(event.target);
-            }
-        });
-
         //Навигация
         document.addEventListener('click',function(event){
             if(event.target.dataset.scroll!=undefined){
@@ -259,84 +233,6 @@
                 menu[i].className='nav-link text-secondary'
             }
         }
-
-        //Валидация
-        function validate(elem){
-            if(elem.dataset.validate=='string'){ 
-                bool=true;
-                for(let i=0;i<elem.value.split('').length;i++){
-                    if(isFinite(elem.value.split('')[i])){
-                        bool=false;
-                        break;
-                    }
-                }
-                if(elem.value.trim()=='') bool=false;
-                if(bool){
-                    elem.className='form-control is-valid';
-                } else elem.className='form-control is-invalid';
-            }
-            else if(elem.dataset.validate=='number'){
-                bool=true;
-                for(let i=0;i<elem.value.split('').length;i++){
-                    if(!isFinite(elem.value.split('')[i])){
-                        bool=false;
-                        break;
-                    }
-                }
-                if(elem.value.trim()=='') bool=false;
-                if(bool){
-                    elem.className='form-control is-valid';
-                } else elem.className='form-control is-invalid';
-            }
-            else if(elem.dataset.validate=='date'){
-                if(elem.value=='' || elem.value==null){
-                    elem.className='form-control is-invalid';
-                    return false;
-                }
-                elem.className='form-control is-valid';
-                return true;
-            }
-        }
-
-        function validateCostModal(){
-            let elements=bodyCostModal.querySelectorAll('[data-validate]');
-            console.log(elements);
-            for(let i=0;i<elements.length;i++){
-                validate(elements[i]);
-            }
-            elements=bodyCostModal.querySelectorAll('[data-validate]');
-            bool=true;
-            for(let i=0;i<elements.length;i++){
-                if(elements[i].className.includes('is-invalid')){
-                    bool=false;
-                    break;
-                }
-            }       
-            console.log(bool);     
-            return bool;
-        }
-
-        function validateIncomeModal(){
-            let elements=bodyIncomeModal.querySelectorAll('[data-validate]');
-            for(let i=0;i<elements.length;i++){
-                validate(elements[i]);
-            }
-            elements=bodyIncomeModal.querySelectorAll('[data-validate]');
-            bool=true;
-            for(let i=0;i<elements.length;i++){
-                if(elements[i].className.includes('is-invalid')){
-                    bool=false;
-                    break;
-                }
-            }       
-            return bool;
-        }
-
-
-
-
-
-
         //Добавление нового товара в таблицу с расходами
         function addTovarToTable(){
             let tbody=tableCostItem.children[1];
@@ -344,345 +240,11 @@
             tr.innerHTML="<td><input type='text' class='form-control' data-validate='string' name='tovarName'></td><td><input type='text' class='form-control' data-validate='number' name='tovarCount'></td><td><input type='text' class='form-control' data-validate='number' name='tovarPrice'></td><td><button class='btn btn-danger' onclick='removeStroke(event)'>Удалить</button></td>";
             tbody.append(tr);
         }
-
-        //Очистка инпутов при закрытии модального окна
-        function clearModalCosts(){
-            console.log('modal clear!');
-            store.value='';
-            category.value='';
-            dateCost.value='';
-            dateCost.className='form-control';
-            store.className='form-control';
-            category.className='form-control';
-            addBtnModalCost.innerHTML='Добавить';
-            addBtnModalCost.onclick=function(){
-                addNewCost();
-            }
-            addNewCostModal.getElementsByTagName('h5')[0].innerHTML="Добавление нового расхода";
-            let tbody=tableCostItem.children[1];
-            tbody.innerHTML="<td><input type='text' class='form-control' data-validate='string' name='tovarName'></td><td><input type='text' class='form-control' data-validate='number' name='tovarCount'></th><th><input type='text' class='form-control' data-validate='number' name='tovarPrice'></td><td><button class='btn btn-danger' onclick='removeStroke(event)'>Удалить</button></td>";
-        }
-
-        //Очистка модального окна доходов
-        function clearModalIncome(){
-            nameIncome.value='';
-            countIncome.value='';
-            dateIncome.value='';
-            nameIncome.className='form-control';
-            countIncome.className='form-control';
-            dateIncome.className='form-control';
-            addBtnModalIncome.innerHTML='Добавить';
-            addNewIncomeModal.getElementsByTagName('h5')[0].innerHTML="Добавление нового дохода";
-            addBtnModalIncome.onclick=function(){
-                addNewIncome();
-            }
-        }
-
-
-
-        //Вывод расходов в таблицу
-        async function viewCosts(){
-            createChart();
-            createChartAll();
-            let tbody=costsTable.children[1];
-            let costs=await getCosts();
-            costs=costs.sort((a,b)=>(b.date-a.date));
-            viewResult();
-            tbody.innerHTML='';
-            let summ=0;
-            if(costs.length){
-                for(let i=0;i<costs.length;i++){
-                    summ+=+costs[i].fullprice;
-                    //Создание tr и td
-                    let tr=document.createElement('tr');
-                    let tdStore=document.createElement('td');
-                    let tdCategory=document.createElement('td');
-                    let tdTovars=document.createElement('td');
-                    let tdPrice=document.createElement('td');
-                    let tdDate=document.createElement('td');
-                    let redactBtnTd=document.createElement('td');
-                    let delBtnTd=document.createElement('td');
-
-                    //кнопки для td
-                    //кнопка редактирования
-                    let redactBtn=document.createElement('button');
-                    redactBtn.value=costs[i].id;
-                    redactBtn.className="btn btn-primary";
-                    redactBtn.textContent="Редактировать";
-                    redactBtn.setAttribute('data-bs-target',"#addNewCostModal");
-                    redactBtn.setAttribute('data-bs-toggle',"modal");
-                    redactBtn.onclick=function(){
-                        viewRedactCost(this.value);
-                    };
-
-                    redactBtnTd.append(redactBtn);
-                    //кнопка удаления
-                    let delBtn=document.createElement('button');
-                    delBtn.value=costs[i].id;
-                    delBtn.className="btn btn-danger";
-                    delBtn.textContent="Удалить";
-                    delBtn.onclick=function(){
-                        if(confirm('Точно хотите удалить?')){
-                            removeCost(this.value);
-                        }
-                    };
-                    delBtnTd.append(delBtn);
-
-                    //стандартные данные
-                    tdStore.innerHTML=costs[i].store;
-                    tdCategory.innerHTML=costs[i].category;    
-                    let date=convertDate(new Date(costs[i].date));
-                    tdDate.innerHTML=date;
-
-                    //перебор товаров в покупке
-                    let items='';
-                    for(let j=0;j<costs[i].items.length;j++){
-                        items+=costs[i].items[j].name+": "+costs[i].items[j].amount+", ";
-                    }
-                    items=items.slice(0,items.length-2);
-                    tdTovars.innerHTML=items;
-                    tdPrice.innerHTML=costs[i].fullprice+' Рлк.';
-
-                    //занесение в tr
-                    tr.append(tdStore);
-                    tr.append(tdCategory);
-                    tr.append(tdTovars);
-                    tr.append(tdPrice);
-                    tr.append(tdDate);
-                    tr.append(redactBtnTd);
-                    tr.append(delBtnTd);
-                    
-                    //занесение в таблицу
-                    tbody.append(tr);
-                }
-                let summTr=document.createElement('tr');
-                summTr.innerHTML=`<tr><td><b>Итого</b></td><td></td><td></td><td> ${summ} Рлк. </td><td></td><td></td><td></td></tr>`
-                tbody.append(summTr);
-            }
-            else{
-                tbody.innerHTML='Записей еще нет!'
-            }
-        }
-
-
-
-        //Добавление новой затраты
-        async function addNewCost(){
-            if(!validateCostModal()) return;
-
-            let items=tableCostItem.children[1].children;
-            let tovars=[];
-            for(let i=0;i<items.length;i++){
-                tovars.push({name: items[i].getElementsByTagName('input')[0].value, 
-                    amount: items[i].getElementsByTagName('input')[1].value,
-                    price: items[i].getElementsByTagName('input')[2].value
-                })
-            }
-            let cost=createCost(store.value,category.value,tovars,dateCost.value);
-            await addCost(cost);
-            closeCost.click();
-            clearModalCosts();
-            viewCosts();
-        }
-
-        //Удаление затраты          
-        async function removeCost(id){
-            let tr=db.transaction('costs','readwrite');
-            let costsStore=tr.objectStore('costs');            
-            await costsStore.delete(+id);
-            viewCosts();
-        }
-
-        //Вывод всех доходов
-
-        async function viewIncomes(){
-            createChartAll();
-            let tbody=incomeTable.children[1];
-            let incomes=await getIncomes();
-            incomes=incomes.sort((a,b)=>(b.date-a.date));
-            viewResult();
-            if(incomes.length){
-                let summ=0;
-                tbody.innerHTML='';
-                for(let i=0;i<incomes.length;i++){
-                    summ+=incomes[i].amount;
-
-                    let tr=document.createElement('tr');
-                    let nameTd=document.createElement('td');
-                    let amountTd=document.createElement('td');
-                    let dateTd=document.createElement('td');
-                    let redactBtnTd=document.createElement('td');
-                    let delBtnTd=document.createElement('td');
-
-                    //кнопки для td
-                    //кнопка редактирования
-                    let redactBtn=document.createElement('button');
-                    redactBtn.value=incomes[i].id;
-                    redactBtn.className="btn btn-primary";
-                    redactBtn.textContent="Редактировать";
-                    redactBtn.setAttribute('data-bs-target',"#addNewIncomeModal");
-                    redactBtn.setAttribute('data-bs-toggle',"modal");
-                    redactBtn.onclick=function(){
-                        viewRedactIncome(this.value);
-                    };
-
-                    redactBtnTd.append(redactBtn);
-
-                    //кнопка удаления
-                    let delBtn=document.createElement('button');
-                    delBtn.value=incomes[i].id;
-                    delBtn.className="btn btn-danger";
-                    delBtn.textContent="Удалить";
-                    delBtn.onclick=function(){
-                        if(confirm('Точно хотите удалить?')){
-                            removeIncome(this.value);
-                        }
-                    };
-                    delBtnTd.append(delBtn);
-
-                    nameTd.innerHTML=incomes[i].name;
-                    amountTd.innerHTML=incomes[i].amount+ ' Рлк.';
-                    let date=convertDate(new Date(incomes[i].date));
-                    dateTd.innerHTML=date;
-
-                    tr.append(nameTd);
-                    tr.append(amountTd);
-                    tr.append(dateTd);
-                    tr.append(redactBtnTd);
-                    tr.append(delBtnTd);
-
-                    tbody.append(tr);
-                }
-                let summTr=document.createElement('tr');
-                summTr.innerHTML=`<tr><td><b>Итого</b></td><td>${summ} Рлк.</td><td></td><td></td><td></td></tr>`;
-                tbody.append(summTr);
-            }
-            else{
-                tbody.innerHTML="Доходов пока что нет"
-            }
-        }
-
-
-        //Добавление нового дохода
-        async function addNewIncome(){
-            if(!validateIncomeModal()) return;
-            let obj=createIncome(nameIncome.value, +countIncome.value,new Date(dateIncome.value));
-            await addIncome(obj);
-            closeIncomeModal.click();
-            viewIncomes();
-            clearModalIncome();
-        }
-
-        //Удаление дохода
-        async function removeIncome(id){
-            let tr=db.transaction('incomes','readwrite');
-            let costsStore=tr.objectStore('incomes');            
-            await costsStore.delete(+id);
-            viewIncomes();
-        }
-
-        //Показ редактируемого расхода
-        async function viewRedactCost(id){
-            clearModalCosts();
-            addBtnModalCost.innerHTML='Изменить';
-            addBtnModalCost.value=id;
-            addBtnModalCost.onclick=function(){
-                redactCost(this.value);
-            }
-            addNewCostModal.getElementsByTagName('h5')[0].innerHTML="Изменение расхода";
-
-            let obj=await getCosts(id);
-            dateCost.value=convertDate(new Date(obj.date));
-            store.value=obj.store;
-            category.value=obj.category;
-            let tbody=tableCostItem.children[1];
-            tbody.innerHTML='';
-            for(let i=0;i<obj.items.length;i++){
-                let tr=document.createElement('tr');
-                tr.innerHTML=`<td><input type='text' class='form-control' name='tovarName' data-validate='tovarName' value='${obj.items[i].name}'></td><td><input type='text' class='form-control' data-validate='tovarCount' name='tovarCount' value='${obj.items[i].amount}'></td><td><input type='text' class='form-control' data-validate='tovarPrice' name='tovarPrice' value='${obj.items[i].price}'></td><td><button class='btn btn-danger' onclick='removeStroke(event)'>Удалить</button></td>`
-                tbody.append(tr);
-            }
-        }
-
-        //конвертация даты
-        function convertDate(date){
-            return date.toLocaleString("default", { year: "numeric" })+'-'+date.toLocaleString("default", { month: "2-digit" })+'-'+date.toLocaleString("default", { day: "2-digit" });
-        }
-
         //Удаление товара
-
         function removeStroke(event){
             console.log(event.target.parentNode.parentNode.remove());
         }
-
-        //Редактирование расхода
-        async function redactCost(id){
-            let cost=await getCosts(id);
-            if(!validateCostModal()) return;
-
-
-            cost.store=store.value;
-            cost.category=category.value;
-            cost.date=new Date(dateCost.value);
-            
-            let items=tableCostItem.children[1].children;
-            let tovars=[];
-            for(let i=0;i<items.length;i++){
-                tovars.push({name: items[i].getElementsByTagName('input')[0].value, 
-                    amount: items[i].getElementsByTagName('input')[1].value,
-                    price: items[i].getElementsByTagName('input')[2].value
-                })
-            }
-            if(items.length>1){
-                //cost.fullprice=tovars.reduce((a,b)=>(+a.price + +b.price));
-                cost.fullprice=summPriceItems(tovars);
-            }
-            else{
-                cost.fullprice=tovars[0].price;
-            }
-            cost.items=tovars;
-            redCost(cost);
-            closeCost.click();
-            clearModalCosts();
-            viewCosts();
-        }
-
-        function summPriceItems(items){
-            let summ=0;
-            for(let i=0;i<items.length;i++){
-                summ+=+items[i].price;
-            }
-            return summ;
-        }
-
-        //Показ редактируемого дохода
-        async function viewRedactIncome(id){
-            clearModalIncome();
-            let income=await getIncomes(id);
-            dateIncome.value=convertDate(new Date(income.date))
-            nameIncome.value=income.name;
-            countIncome.value=income.amount;
-            addBtnModalIncome.innerHTML='Изменить';
-            addBtnModalIncome.value=id;
-            addBtnModalIncome.onclick=function(){
-                redactIncome(this.value);
-            }
-            addNewIncomeModal.getElementsByTagName('h5')[0].innerHTML="Изменение дохода";
-        } 
-        //Редактирование дохода
-        async function redactIncome(id){
-            let income=await getIncomes(id);
-            if(!validateIncomeModal()) return;
-            income.name=nameIncome.value;
-            income.amount=+countIncome.value;
-            income.date=new Date(dateIncome.value);
-            await redIncome(income);
-            closeIncomeModal.click()
-            clearModalIncome();
-            viewIncomes();
-        }
-
-        //Показ результата за последние 30 дней(потом допишу)
+        //Показ результата за последние 30 дней
         async function viewResult(){
             let incomes=await getIncomes();
             let costs=await getCosts();
@@ -715,193 +277,6 @@
                 itog.innerHTML='<span class="text-warning">Не пониманте...<span>'
             }
         }
-
-        //Получение затрат
-        async function getCosts(id){
-            let tr=db.transaction('costs');
-            let costsStore=tr.objectStore('costs');
-            if(id){
-                let cost=costsStore.get(+id);
-                return cost;
-            }
-            costs=await costsStore.getAll();
-            return costs;
-        };
-
-        //Получение доходов
-        async function getIncomes(id){
-            let tr=db.transaction('incomes');
-            let incomesStore=tr.objectStore('incomes');
-            if(id){
-                let income=incomesStore.get(+id);
-                return income;
-            }
-            let incomes=incomesStore.getAll();
-            return incomes;
-        }
-
-        //Добавление расхода
-        async function addCost(obj){
-            let tx=db.transaction('costs','readwrite');
-            let request =await tx.objectStore('costs').add(obj);
-            request.onerror=function(event){
-                if(event.error.name=='ConstraintError'){
-                    //Позже допишу
-                }
-            }
-        };
-
-        //Изменение расхода
-        async function redCost(obj){
-            let tx=db.transaction('costs','readwrite');
-            let request =await tx.objectStore('costs').put(obj);
-        };
-        async function redIncome(obj){
-            let tx=db.transaction('incomes','readwrite');
-            let request =await tx.objectStore('incomes').put(obj);  
-        }
-
-        //Добавление дохода
-        async function addIncome(obj){
-            let tx=db.transaction('incomes','readwrite');
-            let request=await tx.objectStore('incomes').add(obj);
-            request.onerror=function(event){
-                if(event.error.name=='ConstraintError'){
-                    //Позже допишу
-                }
-            }
-        }
-
-        //Рандомный id
-        function getRandomId(){
-            return +(1+Math.random()*(1e6-1)).toFixed();
-        }
-        //Объекты для добавления
-
-        //Расход
-        function createCost(store,category,items,date){
-            let fullPrice;
-            if(items.length>1){
-                fullPrice=summPriceItems(items);
-            }
-            else{
-                fullPrice=items[0].price;
-            }
-            return {
-                id:getRandomId(),
-                store:store,
-                category:category,
-                items:items,
-                fullprice:fullPrice,
-                date:new Date(date).getTime(),
-            }
-        }
-        //Доход
-        function createIncome(name,amount,date){
-            return {
-                id:getRandomId(),
-                name:name,
-                amount:amount,
-                date:new Date(date).getTime(),
-            }
-        }
-
-        //График всех доходов и расходов
-
-        async function createChartAll(){
-            let incomes=await getIncomes();
-            let costs=await getCosts();
-            let incomeSumm=0;
-            let costsSumm=0;
-
-            for(let i=0;i<incomes.length;i++){
-                incomeSumm+=+incomes[i].amount;
-            }
-
-            for(let i=0;i<costs.length;i++){
-                for(let j=0;j<costs[i].items.length;j++){
-                    costsSumm+=+costs[i].items[j].price;
-                }
-            }
-            let pMas=chartAll.getElementsByTagName('p');
-            pMas[0].innerHTML=`Доходы (${incomeSumm})`;
-            pMas[1].innerHTML=`Расходы (${costsSumm})`;
-
-            let green=chartAll.children[0].children[0].children[1];
-            let red=chartAll.children[0].children[1].children[1];
-
-            function sliceHeight(){
-                if(parseFloat(red.style.height)>600){
-                    red.style.height=(parseFloat(red.style.height)/2)+'px';
-                    green.style.height=(parseFloat(green.style.height)/2)+'px';
-                    sliceHeight();
-                }
-                return;
-            }
-            let ratio=incomeSumm/costsSumm;
-            ratio=costsSumm/incomeSumm;
-            red.style.height=(400*ratio).toFixed()+"px";
-            sliceHeight();
-        }
-
-        //График
-        let chart;
-        async function createChart() {
-
-            let costs=await getCosts();
-            costs.sort((a,b)=>(a.date-b.date));
-            let data=new Map();
-            for(let i=0;i<costs.length;i++){
-                date=new Date(costs[i].date);
-                date=getWeekDay(date);
-                if(costs[i].date>Date.now()-604800000){
-                    if(data.has(date)){
-                        data.set(date,+data.get(date) + +costs[i].fullprice); 
-                    }
-                    else{
-                        data.set(date,costs[i].fullprice);
-                    }
-                }
-            }
-            if(chart){
-                chart.destroy();
-            }
-            var ctx = document.getElementById('chart');
-
-            chart = new Chart(ctx, {
-              type: 'line',
-              data: {
-                labels: Array.from(data.keys()),
-                datasets: [{
-                  data: Array.from(data.values()),
-                  lineTension: 0,
-                  backgroundColor: 'transparent',
-                  borderColor: '#007bff',
-                  borderWidth: 4,
-                  pointBackgroundColor: '#007bff'
-                }]
-              },
-              options: {
-                scales: {
-                  yAxes: [{
-                    ticks: {
-                      beginAtZero: false
-                    }
-                  }]
-                },
-                legend: {
-                  display: false
-                }
-              }
-            });
-        }
-
-        function getWeekDay(date) {
-            let days = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
-            return days[date.getDay()];
-        }
-
-        
     </script>
 </body>
 </html>
