@@ -27,7 +27,7 @@ function validate(elem){
         } else elem.className='form-control is-invalid';
     }
     else if(elem.dataset.validate=='date'){
-        if(elem.value=='' || elem.value==null){
+        if(elem.value=='' || elem.value==null || new Date(elem.value).getTime()>Date.now()){
             elem.className='form-control is-invalid';
             return false;
         }
@@ -38,7 +38,6 @@ function validate(elem){
 
 function validateCostModal(){
     let elements=bodyCostModal.querySelectorAll('[data-validate]');
-    console.log(elements);
     for(let i=0;i<elements.length;i++){
         validate(elements[i]);
     }
@@ -50,7 +49,6 @@ function validateCostModal(){
             break;
         }
     }       
-    console.log(bool);     
     return bool;
 }
 

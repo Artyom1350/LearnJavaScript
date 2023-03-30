@@ -1,6 +1,5 @@
 //Очистка инпутов при закрытии модального окна
 function clearModalCosts(){
-    console.log('modal clear!');
     store.value='';
     category.value='';
     dateCost.value='';
