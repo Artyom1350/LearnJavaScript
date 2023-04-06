@@ -1,0 +1,1 @@
+{"ast":null,"code":"import { UserIncApplComponent } from './user.inc-appl.component';\n{\n  declarations: [UserIncApplComponent];\n}\nexport class UserIncApplModule {}","map":null,"metadata":{},"sourceType":"module","externalDependencies":[]}

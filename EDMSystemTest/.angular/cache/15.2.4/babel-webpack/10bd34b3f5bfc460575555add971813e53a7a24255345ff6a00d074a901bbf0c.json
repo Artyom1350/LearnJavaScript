@@ -1,0 +1,1 @@
+{"ast":null,"code":"export const users = [{\n  id: 1,\n  name: 'oleg',\n  email: 'Asdfg123@mail.ru',\n  password: 'Asdfg123',\n  role: 'user'\n}, {\n  id: 1,\n  name: 'oleg',\n  email: 'Asdfg123@mail.ru',\n  password: 'Asdfg123',\n  role: 'user'\n}];","map":null,"metadata":{},"sourceType":"module","externalDependencies":[]}

@@ -1,0 +1,1 @@
+{"ast":null,"code":"import { AuthService } from './../auth.service';\nimport { inject } from '@angular/core';\nexport const userGuard = () => {\n  const authService = inject(AuthService);\n  if (authService.isLoggedIn == true && authService.role == 'user') {\n    return true;\n  }\n  return;\n};","map":null,"metadata":{},"sourceType":"module","externalDependencies":[]}

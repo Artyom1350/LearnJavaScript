@@ -1,0 +1,24 @@
+<div class="container d-flex flex-column align-items-center">
+    <h1>Входящие заявки</h1>
+    <table class="w-100 mt-4">
+        <thead class="w-100">
+            <tr class="d-flex justify-content-between pe-3 ps-3 mb-3"> 
+                <th class="w-25">Отправитель</th>
+                <th class="w-25">Название заявки</th>
+                <th class="w-25">Дата отправления</th>
+                <th class="w-25"></th>
+            </tr>
+        </thead>
+        <tbody class="w-100">
+            <tr class="d-flex align-items-center justify-content-between bg-light ps-3 pe-3 rounded mb-3">
+                <td class="w-25">Пример</td>
+                <td class="w-25">Выполнение работ</td>
+                <td class="w-25">18.01.2023</td>
+                <td class="d-flex align-items-center justify-content-end w-25">
+                    <i class="bi bi-eye p-0 text-primary" style="font-size: 2rem;" data-bs-toggle="modal" data-bs-target="#viewApplModal" ></i>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<inc-appl-view></inc-appl-view>

@@ -1,0 +1,1 @@
+{"ast":null,"code":"import { UserHomeComponent } from './user-home.component';\n{\n  declarations: [UserHomeComponent];\n}\nexport class UserHomeModule {}","map":null,"metadata":{},"sourceType":"module","externalDependencies":[]}

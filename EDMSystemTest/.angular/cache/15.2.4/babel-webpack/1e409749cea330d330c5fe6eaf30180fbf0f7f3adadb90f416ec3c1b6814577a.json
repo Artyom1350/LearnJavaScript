@@ -1,0 +1,1 @@
+{"ast":null,"code":"//import { NgModule } from \"@angular/core\";\n//import { UserInclApplTableComponent } from \"./user.inc-appl.table.component\";\n//\n//@NgModule({\n//    declarations: [UserInclApplTableComponent],\n//})\n//export class UserInclApplTableModule {}","map":null,"metadata":{},"sourceType":"script","externalDependencies":[]}

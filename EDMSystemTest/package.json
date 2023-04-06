@@ -1,0 +1,31 @@
+{
+    "name": "edmsystem",
+    "version": "1.0.0",
+    "description": "Test angular gproject",
+    "author": "Petrov Artem",
+    "scripts": {
+        "ng": "ng",
+        "start": "ng serve",
+        "build": "ng build"
+    },
+    "dependencies": {
+        "@angular/common": "~15.0.0",
+        "@angular/compiler": "~15.0.0",
+        "@angular/core": "~15.0.0",
+        "@angular/forms": "~15.0.0",
+        "@angular/platform-browser": "~15.0.0",
+        "@angular/platform-browser-dynamic": "~15.0.0",
+        "@angular/router": "~15.0.0",
+        "bootstrap": "^5.2.3",
+        "bootstrap-icons": "^1.10.4",
+        "ngx-cookie-service": "^15.0.0",
+        "rxjs": "7.5.0",
+        "zone.js": "~0.12.0"
+    },
+    "devDependencies": {
+        "@angular-devkit/build-angular": "^15.2.4",
+        "@angular/cli": "~15.0.0",
+        "@angular/compiler-cli": "~15.0.0",
+        "typescript": "~4.8.2"
+    }
+}

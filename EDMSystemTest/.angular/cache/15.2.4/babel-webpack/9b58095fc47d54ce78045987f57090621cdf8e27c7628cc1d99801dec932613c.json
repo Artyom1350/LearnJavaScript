@@ -1,0 +1,1 @@
+{"ast":null,"code":"export const adminGuard = (route, state) => {\n  inje;\n};","map":null,"metadata":{},"sourceType":"module","externalDependencies":[]}
