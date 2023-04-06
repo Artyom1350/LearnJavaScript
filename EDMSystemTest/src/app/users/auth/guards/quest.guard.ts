@@ -11,10 +11,10 @@ export class QuestGuard implements CanActivate {
         return true;
     } 
     else {
-        if(this.authService.user.role=='user'){
+        if(this.authService.user.role==0){
             this.router.navigate(['/user']);
         }
-        if(this.authService.user.role=='admin'){
+        if(this.authService.user.role==1){
             this.router.navigate(['/admin']);
         }
         return false;

@@ -8,7 +8,7 @@ export class UserGuard implements CanActivate {
 
   canActivate() {
     if(this.authService.user!=null){
-        if ( this.authService.user.role=='user') {
+        if ( this.authService.user.role==0) {
             return true;
         } else {
             this.router.navigate(['/admin']);

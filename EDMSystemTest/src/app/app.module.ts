@@ -10,11 +10,12 @@ import {NotFoundComponent} from './errors/not-found.component';
 import { AppRoutingModule } from './app-routing.module'
 import { CookieService } from 'ngx-cookie-service';
 import { AdminHomeComponent } from './users/admin/admin-home.component';
+import { HttpClientModule } from '@angular/common/http';
 
 
 
 @NgModule({
-    imports: [BrowserModule, AppRoutingModule, AuthModule, UserHomeModule, AdminHomeModule],
+    imports: [BrowserModule, AppRoutingModule, AuthModule, UserHomeModule, AdminHomeModule, HttpClientModule],
     declarations:[AppComponent, UserHomeComponent, NotFoundComponent, AdminHomeComponent],
     bootstrap:[AppComponent],
     providers:[AuthService, CookieService],
