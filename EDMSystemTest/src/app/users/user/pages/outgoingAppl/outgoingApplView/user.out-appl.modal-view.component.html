@@ -14,21 +14,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Пример</td>
-                        <td class="text-secondary">Не прочитано</td>
-                    </tr>
-                    <tr>
-                        <td>Пример</td>
-                        <td class="text-warning">Прочитано</td>
-                    </tr>
-                    <tr>
-                        <td>Пример</td>
-                        <td class="text-primary">В работе</td>
-                    </tr>
-                    <tr>
-                        <td>Пример</td>
-                        <td class="text-success">Завершено</td>
+                    <tr *ngFor="let item of outApplStatuses">
+                        <td>{{item.name}}</td>
+                        <td [className]=status[item.status]>{{statusName[item.status]}}</td>
                     </tr>
                 </tbody>
             </table>

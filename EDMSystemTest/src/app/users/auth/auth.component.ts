@@ -33,7 +33,7 @@ export class AuthComponent{
                 }
             },
             error:error=> console.log(error)
-    });
+        });
 
         //this.findUserByEmail();
 

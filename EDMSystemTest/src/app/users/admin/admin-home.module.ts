@@ -1,3 +1,4 @@
+import { NgFor } from '@angular/common';
 import { AdminViewGroupJobComponent } from './pages/viewGroupsAndJob/admin.view-group-job.component';
 import { AdminGroupsTableComponent } from './pages/viewGroupsAndJob/groupsTable/admin.groupstable.component';
 import { AdminJobTableComponent } from './pages/viewGroupsAndJob/jobTable/admin.jobtable.component';
@@ -6,8 +7,10 @@ import { AdminUsersForm } from './pages/viewUsers/usersForm/admin.users-form.com
 import { AdminViewUsersTableComponent } from './pages/viewUsers/viewUsersTable/admin.view-users.table.component';
 import { NgModule } from "@angular/core";
 
+
 @NgModule({
     declarations: [AdminViewUsersTableComponent,AdminUsersForm, AdminJobTableComponent, AdminGroupsTableComponent,AdminViewUsersComponent, AdminViewGroupJobComponent],
-    exports: [AdminViewUsersTableComponent]
+    exports: [AdminViewUsersTableComponent],
+    imports: [NgFor]
 })
 export class AdminHomeModule{}

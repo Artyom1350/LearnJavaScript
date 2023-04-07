@@ -4,4 +4,7 @@ import { Component } from "@angular/core";
     selector: 'user-inc-appl',
     templateUrl: 'user.inc-appl.component.html',
 })
-export class UserIncApplComponent{ }
+export class UserIncApplComponent{
+
+    
+}

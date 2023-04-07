@@ -10,7 +10,6 @@ import { Injectable } from "@angular/core";
 export class AuthService{
     user:AuthUser|null=null;
     constructor(private cookie:CookieService){
-        console.log(this.cookie.get('userRole'))
         if(this.cookie.get('userRole')){
             this.user={
                 id:parseInt(this.cookie.get('userId')),

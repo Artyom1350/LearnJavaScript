@@ -1,8 +1,8 @@
-export class IncomeApplClass{
+export class InclAppl{
     id: number;
-    user_id:number;
+    sender:string;
     title: string;
     description: string;
     dateAppl: Date;
-    created_at: Date;
+    status: number;
 }
