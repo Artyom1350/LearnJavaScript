@@ -23,6 +23,9 @@
                     <label for="description">Описание заявки</label>
                     <textarea name="description" cols="30" rows="5" class="form-control" readonly>{{inclAppl.description}}</textarea>
                 </div>
+                <div>
+                  <a (click)="download(inclAppl.id)" style="cursor: pointer;" class="link link-primary">Скачать файл</a>
+                </div>
                 <div class="mb-3">
                     <label for="changeStatus">Изменение статуса</label>
                     <select name="status" class="form-control" (change)="changeStatus()" [(ngModel)]="status">

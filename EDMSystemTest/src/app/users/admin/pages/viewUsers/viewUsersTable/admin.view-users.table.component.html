@@ -1,12 +1,18 @@
-<div class="container d-flex justify-content-between">
-    <div class="overflow-auto" style="height: 40rem; width: 40rem;">
-        <div class="d-flex p-3 m-2 bg-light rounded justify-content-between" *ngFor="let item of users">
-            <p class="">da</p>
-            <div class="d-flex">
-                <button class="btn btn-primary me-2">Редактировать</button>
-                <button class="btn btn-danger">Удалить</button>
+<div class="container d-flex justify-content-between mt-3">
+    <div class="w-100">
+        <h2 class="text-center">Пользователи</h2>
+        <div class="overflow-auto" style="height: 40rem; width: 40rem;" *ngIf="users!=null">
+            <div class="d-flex p-3 m-2 bg-light rounded justify-content-between" *ngFor="let item of users">
+                <p class="">{{item.name}}</p>
+                <div class="d-flex">
+                    <button class="btn btn-primary me-2" (click)="changeUser(item.id)">Редактировать</button>
+                    <button class="btn btn-danger" (click)="removeUser(item.id)">Удалить</button>
+                </div>
             </div>
         </div>
+        <div *ngIf="users==null" class="text-center">
+            <img src="https://icon-library.com/images/loading-gif-icon/loading-gif-icon-9.jpg" alt="load" width="200rem">
+        </div>    
     </div>
-    <users-form></users-form>
+    <users-form (childEvent)="update()"></users-form>
 </div>

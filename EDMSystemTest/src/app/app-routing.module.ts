@@ -49,7 +49,7 @@ const appRoutes: Routes=[
   },
   {
     path: 'leave',
-    component: AuthLeaveComponent
+    component: AuthLeaveComponent,
   },
   {path: '**',component:NotFoundComponent},
 ];

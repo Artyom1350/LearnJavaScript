@@ -1,55 +1,65 @@
-<div class="modal fade" id="outApplModal" tabindex="-1" aria-labelledby="outApplModalLabel" aria-hidden="false">
+<div class="modal modal-lg fade" id="outApplModal" tabindex="-1" aria-labelledby="outApplModalLabel" aria-hidden="false">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="outApplModalLabel">Просмотр заявки</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <h5 class="modal-title" id="outApplModalLabel">Добавить заявку</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close" (click)="clear()"></button>
         </div>
         <div class="modal-body">
-            <form [formGroup]="addOrChangeForm" novalidate (ngSubmit)="addOrChangeAppl()"> 
-                <div class="form-group mb-3">
+            <form  [formGroup]="outApplForm"> 
+                <div class="mb-3">
                     <label for="title">Название</label>
-                    <input type="text" name="title" class="form-control" formControlName="title">
-                </div>
-                <div class="form-group mb-3">
-                    <label for="date">Дата окончания</label>
-                    <input type="date" name="date" class="form-control" value="2023-04-10" formControlName="date">
-                </div>
-                <div class="form-group mb-3">
-                    <label for="description">Описание заявки</label>
-                    <textarea name="description" cols="30" rows="5" class="form-control" formControlName="description"></textarea>
+                    <input type="text" name="title" class="form-control" formControlName="title" [ngClass]="{'is-invalid' : outApplForm.controls['title'].invalid && outApplForm.controls['title'].touched }">
+                    <div class="text-danger" *ngIf="outApplForm.controls['title'].invalid && outApplForm.controls['title'].touched">Не корректное название</div>
                 </div>
                 <div class="mb-3">
-                    <p>Пользователи</p>
-                    <div>
+                    <label for="date">Дата окончания</label>
+                    <input type="date" name="date" class="form-control" value="2023-04-10" formControlName="date" [ngClass]="{'is-invalid' : outApplForm.controls['date'].invalid && outApplForm.controls['date'].touched }">
+                    <div class="text-danger" *ngIf="outApplForm.controls['date'].invalid && outApplForm.controls['date'].touched">Не корректная дата</div>
+                </div>
+                <div class="mb-3">
+                    <label for="description">Описание заявки</label>
+                    <textarea name="description" cols="30" rows="5" class="form-control" formControlName="description" [ngClass]="{'is-invalid' : outApplForm.controls['description'].invalid && outApplForm.controls['description'].touched }"></textarea>
+                    <div class="text-danger" *ngIf="outApplForm.controls['description'].invalid && outApplForm.controls['description'].touched">Не корректное описание</div>
+                </div>
+                <div class="mb-3 d-flex">
+                    <div class="w-50">
+                        <p>Пользователи</p>
                         <table class="table">
-                            <tbody>
-                                <td>Тест</td>
-                                <td><input type="checkbox" class="form-form-check-input"></td>
+                            <tbody id="userItems" class="d-block overflow-auto" style="height: 15rem; width: fit-content;">
+                                <tr *ngFor="let item of users" class="w-100">
+                                    <td>{{item.name}}</td>
+                                    <td><input type="checkbox" value="{{item.id}}" class="form-form-check-input" (change)="changeUsers($event)"></td>    
+                                </tr>
                             </tbody>
                         </table>
                     </div>
-                    <p>Группы</p>
-                    <div>
-                        <table class="table">
-                            <tbody>
-                                <td>Тест</td>
-                                <td><input type="checkbox" class="form-form-check-input"></td>
+                    <div class="ms-3">
+                        <p>Группы</p>
+                        <table class="table" >
+                            <tbody id="groupItems" class="d-block overflow-auto" style="height: 15rem; width: fit-content;">
+                                <tr *ngFor="let item of groups" class="w-100">
+                                    <td>{{item.name}}</td>
+                                    <td><input type="checkbox" value="{{item.id}}" class="form-form-check-input" (change)="changeGroups($event)"></td>    
+                                </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
-                <div class="form-group mb-3">
+                <div class="mb-3">
                     <label for="file">Файл</label>
-                    <input type="file" class="form-control" name="file" formControlName="file">
+                    <div *ngIf="doc_id" class="mb-1">
+                        <a (click)="download(doc_id)" class="link link-primary" style="cursor: pointer;">Скачать предыдущий файл</a>
+                    </div>    
+                    <input type="file" accept="application/pdf" class="form-control" (change)="addFile($event)" name="file" formControlName="file" [ngClass]="{'is-invalid' : outApplForm.controls['file'].invalid && outApplForm.controls['file'].touched }">
+                    <div class="text-danger" *ngIf="outApplForm.controls['file'].invalid && outApplForm.controls['file'].touched">Файл не выбран</div>
                 </div>
-                <div class="form-group">
-                    <button class="btn btn-primary" [disabled]="addOrChangeForm.invalid">Добавить</button>
-                </div>
+                
             </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+            <button class="btn btn-primary me-3" (click)="addOrChangeAppl()" [disabled]="outApplForm.invalid" id="addBtn">Добавить</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="clear()">Закрыть</button>
         </div>
       </div>
     </div>

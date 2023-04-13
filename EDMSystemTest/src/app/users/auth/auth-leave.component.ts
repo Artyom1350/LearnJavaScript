@@ -9,6 +9,9 @@ import { Router } from '@angular/router';
 export class AuthLeaveComponent{
     constructor(private authService: AuthService,private router: Router){
         this.authService.removeUser();
-        router.navigateByUrl('login');
+        console.log(this.authService.user);
+        setTimeout(() => {
+            window.location.reload();
+        }, 1000);         
     }
 }

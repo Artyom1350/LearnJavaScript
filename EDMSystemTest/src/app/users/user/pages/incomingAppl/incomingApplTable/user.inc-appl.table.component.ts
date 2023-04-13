@@ -33,7 +33,5 @@ export class UserInclApplTableComponent implements OnInit{
     choiseViewAppl(id){
         this.choiseIncAppl=this.incAppls[id];
         this.status=this.incAppls[id].status;
-        console.log(this.status);
-        //this.viewIncludeService.setIncl(this.incAppls[id]);
     }
 }

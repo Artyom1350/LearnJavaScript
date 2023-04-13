@@ -1,75 +1,73 @@
 <div class="container d-flex justify-content-between">
-    <div class="overflow-auto" style="height: 40rem; width: 40rem;">
-        <div class="d-flex p-3 m-2 bg-light rounded justify-content-between">
-            <p class="">Тест Тестович Тестов</p>
-            <div class="d-flex">
-                <button class="btn btn-primary me-2">Редактировать</button>
-                <button class="btn btn-danger">Удалить</button>
+    <div class="me-3" style="width: 35rem;">
+        <h2 class="text-center">Структурные подразделения</h2>
+        <div class="w-100 overflow-auto" style="height: 40rem;" *ngIf="groups!=null">
+            <div class="d-flex p-3 m-2 bg-light rounded justify-content-between align-items-center" *ngFor="let item of groups; let i=index">
+                <p class="">{{item.name}}</p>
+                <div class="d-flex align-items-center">
+                    <button class="btn btn-primary me-2" (click)="change(item,i)">Редактировать</button>
+                    <button class="btn btn-danger" (click)="remove(item.id, i)">Удалить</button>
+                </div>
             </div>
         </div>
-        <div class="d-flex p-3 m-2  bg-light rounded justify-content-between">
-            <p class="">Тест Тестович Тестов</p>
-            <div class="d-flex">
-                <button class="btn btn-primary me-2">Редактировать</button>
-                <button class="btn btn-danger">Удалить</button>
-            </div>
-        </div>
-        <div class="d-flex p-3 m-2  bg-light rounded justify-content-between">
-            <p class="">Тест Тестович Тестов</p>
-            <div class="d-flex">
-                <button class="btn btn-primary me-2">Редактировать</button>
-                <button class="btn btn-danger">Удалить</button>
-            </div>
-        </div>
-        <div class="d-flex p-3 m-2  bg-light rounded justify-content-between">
-            <p class="">Тест Тестович Тестов</p>
-            <div class="d-flex">
-                <button class="btn btn-primary me-2">Редактировать</button>
-                <button class="btn btn-danger">Удалить</button>
-            </div>
-        </div>
-        <div class="d-flex p-3 m-2  bg-light rounded justify-content-between">
-            <p class="">Тест Тестович Тестов</p>
-            <div class="d-flex">
-                <button class="btn btn-primary me-2">Редактировать</button>
-                <button class="btn btn-danger">Удалить</button>
-            </div>
-        </div>
-        <div class="d-flex p-3 m-2  bg-light rounded justify-content-between">
-            <p class="">Тест Тестович Тестов</p>
-            <div class="d-flex">
-                <button class="btn btn-primary me-2">Редактировать</button>
-                <button class="btn btn-danger">Удалить</button>
-            </div>
-        </div>
-        <div class="d-flex p-3 m-2  bg-light rounded justify-content-between">
-            <p class="">Тест Тестович Тестов</p>
-            <div class="d-flex">
-                <button class="btn btn-primary me-2">Редактировать</button>
-                <button class="btn btn-danger">Удалить</button>
-            </div>
-        </div>
-        <div class="d-flex p-3 m-2  bg-light rounded justify-content-between">
-            <p class="">Тест Тестович Тестов</p>
-            <div class="d-flex">
-                <button class="btn btn-primary me-2">Редактировать</button>
-                <button class="btn btn-danger">Удалить</button>
-            </div>
-        </div>
-        <div class="d-flex p-3 m-2  bg-light rounded justify-content-between">
-            <p class="">Тест Тестович Тестов</p>
-            <div class="d-flex">
-                <button class="btn btn-primary me-2">Редактировать</button>
-                <button class="btn btn-danger">Удалить</button>
-            </div>
-        </div>
-        <div class="d-flex p-3 m-2  bg-light rounded justify-content-between">
-            <p class="">Тест Тестович Тестов</p>
-            <div class="d-flex">
-                <button class="btn btn-primary me-2">Редактировать</button>
-                <button class="btn btn-danger">Удалить</button>
-            </div>
-        </div>
+        <div *ngIf="groups==null" class="text-center" style="width: 35rem">
+            <img src="https://icon-library.com/images/loading-gif-icon/loading-gif-icon-9.jpg" alt="load" width="200rem">
+        </div>     
     </div>
-    <admin-jobtable></admin-jobtable>
+    <div style="width: 40rem">
+        <h2 class="text-center">Форма редактирования</h2>
+        <div class="mt-3">
+            <h4>Дествия с отделением</h4>
+            <form [formGroup]="groupForm" class="mb-3">
+                <label for="name">Название</label>
+                <input type="text" name="name" class="form-control" formControlName="groupName" [ngClass]="{'is-invalid' : groupForm.controls['groupName'].invalid && groupForm.controls['groupName'].touched}">
+                <div class="text-danger" *ngIf="groupForm.controls['groupName'].invalid && groupForm.controls['groupName'].touched " >Не корректное название</div>
+            </form>
+            <div class="mb-3">
+                <button class="btn btn-primary" [disabled]="groupForm.invalid" (click)="addOrChange()" id="addBtn">Добавить</button>
+            </div>
+        </div>
+        <h4>Должности</h4>
+        <div class="overflow-auto" style="width: 100%; height: 20rem;" *ngIf="jobs!=null">
+            <div class="d-flex p-3 m-2 ms-0 bg-light rounded justify-content-between align-items-center" *ngFor="let item of jobs; let i=index">
+                <p class="">{{item.name}}</p>
+                <div class="d-flex">
+                    <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#jobModal" (click)="changeJob(i)">Редактировать</button>
+                    <button class="btn btn-danger" (click)="removeJob(item.id,i)">Удалить</button>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="jobs==null && changeId!=null" class="text-center" style="width: 35rem; height: 20rem;">
+            <img src="https://icon-library.com/images/loading-gif-icon/loading-gif-icon-9.jpg" alt="load" width="200rem">
+        </div>
+        <div *ngIf="jobs==null && changeId==null" style="height: 20rem;" class="text-danger">
+        </div>      
+        <div class="mt-3 d-flex justify-content-end">
+            <button class="btn btn-danger me-3" (click)="clear()">Очистить форму</button>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#jobModal" [disabled]="selectedGroup==null" (click)="openModal()">Добавить</button>
+        </div>       
+    </div>
 </div>
+
+<!-- ModalForJobs -->
+<div class="modal fade" id="jobModal" tabindex="-1" aria-labelledby="jobModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="jobModalLabel">Добавление должности</h5>
+          <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close" id="close"></button>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="jobForm">
+                <input type="text" class="form-control" name="jobName" formControlName="jobName" [ngClass]="{'is-invalid' : jobForm.controls['jobName'].invalid && jobForm.controls['jobName'].touched}">
+                <div class="text-danger" *ngIf="jobForm.controls['jobName'].invalid && jobForm.controls['jobName'].touched">Не корректное название</div>
+            </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+          <button type="button" class="btn btn-primary" (click)="addJob()" id="addJobBtn" [disabled]="jobForm.invalid">Добавить</button>
+        </div>
+      </div>
+    </div>
+  </div>
+

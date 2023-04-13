@@ -8,7 +8,10 @@ export class ApiService{
     constructor(private http: HttpClient){
     }
     request(body: any, url:string){
-        return this.http.post(this.url+url, body)
+        return this.http.post(this.url+url, body,{headers:{ 'Access-Control-Allow-Origin': '*' }})
+    }
+    downloadRequest(body: any, url:string){
+        return this.http.post(this.url+url, body,{responseType: 'blob'})
     }
 
 }

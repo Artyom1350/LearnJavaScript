@@ -1,3 +1,4 @@
+import { saveAs } from 'file-saver';
 import { OutApplStatus } from './../../../classes/outApplStatusClass';
 import { OutAppl } from './../../../classes/outApplClass';
 import { Component, OnInit, ViewChild } from '@angular/core';
@@ -7,12 +8,13 @@ import { UserOutApplModalComponent } from '../outgoingApplModal/user.out-appl.mo
 @Component({
     selector: 'out-table',
     templateUrl: 'user.out-appl.table.component.html',
-    providers: [ApiService,OutApplService]
+    providers: [ApiService,OutApplService],
     
 })
 export class UserOutApplTableComponent implements OnInit{
     outAppl:Array<OutAppl>;
     choiseOutApplStatus:Array<OutApplStatus>=null;
+    selectedAppl;
 
     @ViewChild(UserOutApplModalComponent)
     viewChild: UserOutApplModalComponent
@@ -26,13 +28,39 @@ export class UserOutApplTableComponent implements OnInit{
     update(){
         this.outApplService.getInclAppl().subscribe((data: Array<OutAppl>)=>{
             this.outAppl=data;
-            console.log(this.outAppl)
         });
     }
     viewChoiseOutAppl(id){
         this.outApplService.getAnsersAppl(id).subscribe((data: Array<OutApplStatus>)=>{
             this.choiseOutApplStatus=data;
         })
+    }
+    download(id, name){
+        this.outApplService.download(id).subscribe(blob => {
+            const a = document.createElement('a')
+            const objectUrl = URL.createObjectURL(blob)
+            a.href = objectUrl
+            a.download = name+'.pdf';
+            a.click();
+            URL.revokeObjectURL(objectUrl);
+          })
+    }
+    destroy(id){
+        if(confirm('Точно хотите удалить заявку?')){
+            this.outApplService.destroy(id).subscribe(()=>{
+                alert('Заявка успешно удалена!');
+                this.update();
+            })    
+        }
+    }
+    change(id){
+        this.outApplService.getChangeAppl(id).subscribe((data)=>{
+            this.selectedAppl=data;    
+            this.viewChild.test(data);
+        })
+    }
+    clearModal(){
+        this.viewChild.clear();
     }
 
 }

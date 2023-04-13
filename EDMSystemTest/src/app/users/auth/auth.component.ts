@@ -12,30 +12,32 @@ import { AuthUser } from './authUser';
     providers:[HttpService, AuthService, ApiService]
 })
 export class AuthComponent{ 
-    receivedUser:AuthUser;
-    @Input() userEmail: string="";
-    @Input() userPassword: string="";
-    done:boolean;
+    loginForm: FormGroup;
+
+    createForm(){
+        this.loginForm=new FormGroup({
+            "userEmail": new FormControl('', [Validators.required, Validators.email,]),
+            "userPassword": new FormControl('',[Validators.required, Validators.minLength(7)])
+        });
+    }
 
     constructor(private authService: AuthService ,private router: Router,  private httpService: ApiService){
-    
+        this.createForm();
     }
 
     submit(){     
-        let body={email: this.userEmail, password: this.userPassword};
-        this.httpService.request(body,'auth').subscribe({
-            next:(data: any) => {
+        let body={email: this.loginForm.value['userEmail'], password: this.loginForm.value['userPassword']};
+        this.httpService.request(body,'auth').subscribe(
+            (data: AuthUser) => {
                 if(data){
-                    this.receivedUser=data; 
-                    this.done=true;
-                    this.authService.setUser(this.receivedUser);
-                    window.location.reload();
+                    this.authService.setUser(data);
+                    window.location.reload();                        
+                }
+                else{
+                    alert("Неверный логин или пароль!");
                 }
             },
-            error:error=> console.log(error)
-        });
-
-        //this.findUserByEmail();
+        );
 
     }
 };

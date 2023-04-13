@@ -1,27 +1,35 @@
 <div class="container d-flex flex-column align-items-center">
     <h1 class="h1">Исходящие заявки</h1>
-    <table class="w-100 mt-4">
-        <thead class="w-100">
-            <tr class="d-flex justify-content-between pe-3 ps-3 mb-3"> 
-                <th class="w-25">Название заявки</th>
-                <th class="w-25">Дата отправления</th>
-                <th class="w-25"></th>
-            </tr>
-        </thead>
-        <tbody class="w-100">
-            <tr *ngFor="let item of outAppl" class="d-flex align-items-center justify-content-between bg-light ps-3 pe-3 rounded mb-3">
-                <td class="w-25">{{item.name}}</td>
-                <td class="w-25">{{item.dateAppl}}</td>
-                <td class="d-flex align-items-center justify-content-end w-25">
-                    <i class="bi bi-eye p-0 text-primary ms-1 me-1" style="font-size: 2rem;" data-bs-toggle="modal" data-bs-target="#viewOutApplModal" (click)="viewChoiseOutAppl(item.id)"></i>
-                    <i class="bi bi-pencil p-0 text-primary ms-1 me-1" style="font-size: 2rem;" data-bs-toggle="modal" data-bs-target="#outApplModal"></i>
-                    <i class="bi bi-x text-danger p-0 ms-1 me-1" style="font-size: 2rem;"></i>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <button class="btn btn-primary align-self-end mb-3" data-bs-toggle="modal" data-bs-target="#outApplModal">Добавить заявку</button>
+    <div *ngIf="outAppl.length>0" class="w-100">
+        <table class="w-100 mt-4">
+            <thead class="w-100">
+                <tr class="d-flex justify-content-between pe-3 ps-3 mb-3"> 
+                    <th class="w-25">Название заявки</th>
+                    <th class="w-25">Дата отправления</th>
+                    <th class="w-25"></th>
+                </tr>
+            </thead>
+            <tbody class="w-100">
+                <tr *ngFor="let item of outAppl" class="d-flex align-items-center justify-content-between bg-light ps-3 pe-3 rounded mb-3">
+                    <td class="w-25">{{item.name}}</td>
+                    <td class="w-25">{{item.dateAppl.replaceAll('-','.')}}</td>
+                    <td class="d-flex align-items-center justify-content-end w-25">
+                        <i class="bi bi-download p-0 text-primary ms-1 me-1" style="font-size: 1.5rem; cursor: pointer;" (click)="download(item.id,item.name)"></i>
+                        <i class="bi bi-eye p-0 text-primary ms-1 me-1" style="font-size: 1.5rem; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#viewOutApplModal" (click)="viewChoiseOutAppl(item.id)"></i>
+                        <i class="bi bi-pencil p-0 text-primary ms-1 me-1" style="font-size: 1.5rem; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#outApplModal" (click)="change(item.id)"></i>
+                        <i class="bi bi-x text-danger p-0 ms-3 me-1" style="font-size: 1.8rem; cursor: pointer;" (click)="destroy(item.id)"></i>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="d-flex justify-content-end">
+            <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#outApplModal" (click)="clearModal()">Добавить заявку</button>    
+        </div>
+    </div>
+    <div *ngIf="outAppl.length<=0">
+        <img src="https://icon-library.com/images/loading-gif-icon/loading-gif-icon-9.jpg" alt="load" width="200rem">
+    </div>
 </div>
 <out-appl-view [outApplStatuses]="choiseOutApplStatus"></out-appl-view>
-<user-out-modal ></user-out-modal>
+<user-out-modal (childEvent)="update()"></user-out-modal>
 

@@ -1,47 +1,48 @@
 <div style="width: 40rem;">
-    <form action="">
+    <h2 class="text-center">Форма редактирования</h2>
+    <form [formGroup]="userForm" novalidate>
         <div class="mb-3">
             <label for="name">Фамилия</label>
-            <input type="text" name="name" class="form-control">
+            <input type="text" name="surname" class="form-control" formControlName="userSurname" [ngClass]="{'is-invalid' : userForm.controls['userSurname'].invalid && userForm.controls['userSurname'].touched }">
+            <div class="text-danger" *ngIf="userForm.controls['userSurname'].invalid && userForm.controls['userSurname'].touched" >Не корректная фамилия</div>
         </div>
         <div class="mb-3">
             <label for="name">Имя</label>
-            <input type="text" name="name" class="form-control">
+            <input type="text" name="name" class="form-control" formControlName="userName" [ngClass]="{'is-invalid' : userForm.controls['userName'].invalid && userForm.controls['userName'].touched }">
+            <div class="text-danger" *ngIf="userForm.controls['userName'].invalid && userForm.controls['userName'].touched" >Не корректное имя</div>
         </div>
         <div class="mb-3">
             <label for="name">Отчество</label>
-            <input type="text" name="name" class="form-control">
+            <input type="text" name="lastname" class="form-control" formControlName="userLastname" [ngClass]="{'is-invalid' : userForm.controls['userLastname'].invalid && userForm.controls['userLastname'].touched }">
+            <div class="text-danger" *ngIf="userForm.controls['userLastname'].invalid && userForm.controls['userLastname'].touched" >Не корректное отчество</div>
         </div>
         <div class="mb-3">
             <label for="name">Пароль</label>
-            <input type="text" name="name" class="form-control">
+            <input type="text" name="password" class="form-control" formControlName="userPassword" [ngClass]="{'is-invalid' : userForm.controls['userPassword'].invalid && userForm.controls['userPassword'].touched }">
+            <div class="text-danger" *ngIf="userForm.controls['userPassword'].invalid && userForm.controls['userPassword'].touched" >Не корректный пароль</div>
         </div>
         <div class="mb-3">
             <label for="name">Почта</label>
-            <input type="text" name="name" class="form-control">
+            <input type="text" name="email" class="form-control" formControlName="userEmail" [ngClass]="{'is-invalid' : userForm.controls['userEmail'].invalid && userForm.controls['userEmail'].touched }">
+            <div class="text-danger" *ngIf="userForm.controls['userEmail'].invalid && userForm.controls['userEmail'].touched" >Не корректный Email</div>
         </div>
         <div class="mb-3">
             <label for="name">Отделение</label>
-            <select name="" id="" class="form-control">
-                <option value="">Тест</option>
-                <option value="">Тест</option>
-                <option value="">Тест</option>
-                <option value="">Тест</option>
-                <option value="">Тест</option>
+            <select id="department" name="department" class="form-control" (change)="getDepartmentParts($event)" formControlName="userDepartment" [ngClass]="{'is-invalid' : userForm.controls['userDepartment'].invalid && userForm.controls['userDepartment'].touched }">                                                                
+                <option value="{{item.id}}" *ngFor="let item of departments">{{item.name}}</option>
             </select>
+            <div class="text-danger" *ngIf="userForm.controls['userDepartment'].invalid && userForm.controls['userDepartment'].touched" >Не корректная группа</div>
         </div>
         <div class="mb-3">
             <label for="name">Должность</label>
-            <select name="" id="" class="form-control">
-                <option value="">Тест</option>
-                <option value="">Тест</option>
-                <option value="">Тест</option>
-                <option value="">Тест</option>
-                <option value="">Тест</option>
+            <select id="department_part" name="department_part" class="form-control" formControlName="userDepartment_part" [ngClass]="{'is-invalid' : userForm.controls['userDepartment_part'].invalid && userForm.controls['userDepartment_part'].touched }">
+                <option *ngFor="let item of department_parts" value="{{item.id}}" >{{item.name}}</option>
             </select>
+            <div class="text-danger" *ngIf="userForm.controls['userDepartment_part'].invalid && userForm.controls['userDepartment_part'].touched" >Не корректная должность</div>
         </div>
         <div class="mb-3">
-            <button class="btn btn-primary">Добавить/Изменить</button>
+            <button class="btn btn-primary me-3" (click)="addOrChange()" [disabled]="userForm.invalid" id="addBtn">Добавить</button>
+            <button class="btn btn-danger" (click)="clear()">Очистить форму</button>
         </div>
     </form>
 </div>
